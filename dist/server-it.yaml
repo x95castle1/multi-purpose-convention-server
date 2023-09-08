@@ -1,0 +1,114 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: simple-convention
+
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: simple-selfsigned-issuer
+  namespace: simple-convention
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: simple-webhook-cert
+  namespace: simple-convention
+spec:
+  subject:
+    organizations:
+    - vmware
+    organizationalUnits:
+    - tanzu
+  commonName: simple-webhook.simple-convention.svc
+  dnsNames:
+  - simple-webhook.simple-convention.svc
+  - simple-webhook.simple-convention.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: simple-selfsigned-issuer
+  secretName: simple-webhook-cert
+  revisionHistoryLimit: 10
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-webhook
+  namespace: simple-convention
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-webhook
+  template:
+    metadata:
+      labels:
+        app: simple-webhook
+    spec:
+      containers:
+      - name: webhook
+        image: garethjevans/simple-conventions:latest
+        imagePullPolicy: Always
+        env:
+        - name: PORT
+          value: "8443"
+        ports:
+        - containerPort: 8443
+          name: webhook
+        livenessProbe:
+          httpGet:
+            scheme: HTTPS
+            port: webhook
+            path: /healthz
+        readinessProbe:
+          httpGet:
+            scheme: HTTPS
+            port: webhook
+            path: /healthz
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 20Mi
+        volumeMounts:
+        - name: certs
+          mountPath: /config/certs
+          readOnly: true
+      volumes:
+        - name: certs
+          secret:
+            defaultMode: 420
+            secretName: simple-webhook-cert
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-webhook
+  namespace: simple-convention
+spec:
+  selector:
+    app: simple-webhook
+  ports:
+    - protocol: TCP
+      port: 443
+      targetPort: webhook
+---
+apiVersion: conventions.carto.run/v1alpha1
+kind: ClusterPodConvention
+metadata:
+  name: simple-convention
+spec:
+  webhook:
+    certificate:
+      namespace: simple-convention
+      name: simple-webhook-cert
+    clientConfig:
+      service:
+        name: simple-webhook
+        namespace: simple-convention

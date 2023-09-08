@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "creationTimestamp": null,
+    "annotations": {
+      "garethjevans.org/livenessProbe": "{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"
+    }
+  },
+  "spec": {
+    "containers": [
+      {
+        "name": "workload",
+        "image": "sample-accelerators/tanzu-java-web-app",
+        "resources": {},
+        "ports": [],
+        "livenessProbe": {
+          "exec": {
+            "command": ["cat", "/tmp/healthy"]
+          },
+          "initialDelaySeconds": 5,
+          "periodSeconds": 5
+        }
+      }
+    ]
+  }
+}
