@@ -1,4 +1,4 @@
-module github.com/garethjevans/simple-conventions/tools
+module github.com/x95castle1/probes-convention-service/tools
 
 go 1.18
 

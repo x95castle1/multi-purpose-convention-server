@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
       - name: webhook
-        image: garethjevans/simple-conventions:latest
+        image: registry.harbor.learn.tapsme.org/convention-service/simple-conventions:latest
         imagePullPolicy: Always
         env:
         - name: PORT

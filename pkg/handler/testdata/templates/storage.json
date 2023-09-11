@@ -2,7 +2,7 @@
   "metadata": {
     "creationTimestamp": null,
     "annotations": {
-      "garethjevans.org/storage": "{\"volumeMounts\":[{\"mountPath\":\"/test\",\"name\":\"test\"}],\"volumes\":[{\"name\":\"test\",\"emptyDir\":{}}]}"
+      "x95castle1.org/storage": "{\"volumeMounts\":[{\"mountPath\":\"/test\",\"name\":\"test\"}],\"volumes\":[{\"name\":\"test\",\"emptyDir\":{}}]}"
     }
   },
   "spec": {

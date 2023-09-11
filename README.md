@@ -16,9 +16,9 @@ This will create a new namespace `simple-convention` and configure cartographer 
 
 | Annotation | Description |
 | --- | --- |
-| `garethjevans.org/livenessProbe` | define a liveness probe |
-| `garethjevans.org/readinessProbe` | define a readiness probe |
-| `garethjevans.org/startupProbe` | define a startup probe |
+| `x95castle1.org/livenessProbe` | define a liveness probe |
+| `x95castle1.org/readinessProbe` | define a readiness probe |
+| `x95castle1.org/startupProbe` | define a startup probe |
 
 ## An example Workload
 
@@ -39,8 +39,8 @@ Below is an example workload that configured two probes.
      12 + |  params:
      13 + |  - name: annotations
      14 + |    value:
-     15 + |      garethjevans.org/livenessProbe: '{"exec":{"command":["cat","/tmp/healthy"]},"initialDelaySeconds":5,"periodSeconds":5}'
-     16 + |      garethjevans.org/readinessProbe: '{"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":5,"periodSeconds":5}'
+     15 + |      x95castle1.org/livenessProbe: '{"exec":{"command":["cat","/tmp/healthy"]},"initialDelaySeconds":5,"periodSeconds":5}'
+     16 + |      x95castle1.org/readinessProbe: '{"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":5,"periodSeconds":5}'
      17 + |  - name: testing_pipeline_matching_labels
      18 + |    value:
      19 + |      apps.tanzu.vmware.com/pipeline: golang-pipeline
@@ -82,7 +82,7 @@ Below is an example workload that configured two probes.
 tanzu apps workload create simple-conventions \
   --namespace dev \
   --git-branch main \
-  --git-repo https://github.com/garethjevans/simple-conventions \
+  --git-repo https://github.com/x95castle1/probes-convention-service \
   --label apps.tanzu.vmware.com/has-tests=true \
   --label app.kubernetes.io/part-of=simple-conventions \
   --param-yaml testing_pipeline_matching_labels='{"apps.tanzu.vmware.com/pipeline":"golang-pipeline"}' \

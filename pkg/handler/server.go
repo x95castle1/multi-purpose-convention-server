@@ -7,18 +7,30 @@ import (
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/garethjevans/simple-conventions/pkg/resources"
+	"github.com/x95castle1/probes-convention-service/pkg/resources"
 )
 
+// This is more framework that wraps around true Convention. True logic
+// is in the resources folder.
+// This is boilerplate code as well.
+
 func AddConventions(logger *zap.SugaredLogger, template *corev1.PodTemplateSpec, images []webhook.ImageConfig) ([]string, error) {
+
+	// These come from the PodConventionContextSpec
+	// These are the all the images
 	imageMap := make(map[string]webhook.ImageConfig)
+
 	for _, config := range images {
 		imageMap[config.Image] = config
 	}
 
 	var appliedConventions []string
+
+	//Loop through every container defined on the PodTemplateSpec from the PodIntent
 	for i := range template.Spec.Containers {
 		container := &template.Spec.Containers[i]
+
+		// This is all the images that are part of the containers
 		image, ok := imageMap[container.Image]
 		if !ok {
 			logger.Warnw("image name not defined", "container", container.Name)

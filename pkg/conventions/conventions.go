@@ -8,6 +8,8 @@ import (
 )
 
 // Convention is the interface defining contract of the conventions to be applied
+// This is boilerplate code. There shouldn't be a need to change this.
+
 type Convention interface {
 	GetId() string
 	IsApplicable(ctx context.Context, target *corev1.PodTemplateSpec, metadata ImageMetadata) bool

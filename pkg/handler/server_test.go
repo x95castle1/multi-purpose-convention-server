@@ -14,7 +14,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/garethjevans/simple-conventions/pkg/resources"
+	"github.com/x95castle1/probes-convention-service/pkg/resources"
 )
 
 const imageDefault = "sample-accelerators/tanzu-java-web-app"

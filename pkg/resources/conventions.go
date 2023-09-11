@@ -8,10 +8,10 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/garethjevans/simple-conventions/pkg/conventions"
+	"github.com/x95castle1/probes-convention-service/pkg/conventions"
 )
 
-const Prefix = "garethjevans.org"
+const Prefix = "x95castle1.org"
 
 var Conventions = []conventions.Convention{
 	&conventions.BasicConvention{

@@ -1,4 +1,4 @@
-module github.com/garethjevans/simple-conventions
+module github.com/x95castle1/probes-convention-service
 
 go 1.20
 

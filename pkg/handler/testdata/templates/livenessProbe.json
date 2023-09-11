@@ -2,7 +2,7 @@
   "metadata": {
     "creationTimestamp": null,
     "annotations": {
-      "garethjevans.org/livenessProbe": "{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"
+      "x95castle1.org/livenessProbe": "{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"
     }
   },
   "spec": {

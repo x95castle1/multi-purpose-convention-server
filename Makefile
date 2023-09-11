@@ -21,7 +21,7 @@ test: fmt vet ## Run tests
 
 .PHONY: fmt
 fmt: ## Run go fmt against code
-	$(GOIMPORTS) --local github.com/garethjevans/simple-conventions -w .
+	$(GOIMPORTS) --local github.com/x95castle1/probes-convention-service -w .
 
 .PHONY: vet
 vet: ## Run go vet against code
@@ -50,7 +50,7 @@ apply:
 		--namespace dev \
   		--git-branch main \
   		--git-repo https://github.com/carto-run/app-golang-kpack \
-		--param-yaml annotations='{"garethjevans.org/readinessProbe":"{\"httpGet\":{\"path\":\"/healthz\",\"port\":8080},\"initialDelaySeconds\":5,\"periodSeconds\":5}","garethjevans.org/livenessProbe":"{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"}' \
+		--param-yaml annotations='{"x95castle1.org/readinessProbe":"{\"httpGet\":{\"path\":\"/healthz\",\"port\":8080},\"initialDelaySeconds\":5,\"periodSeconds\":5}","x95castle1.org/livenessProbe":"{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"}' \
   		--label apps.tanzu.vmware.com/has-tests=true \
   		--label app.kubernetes.io/part-of=app-golang-kpack \
   		--param-yaml testing_pipeline_matching_labels='{"apps.tanzu.vmware.com/pipeline":"golang-pipeline"}' \
