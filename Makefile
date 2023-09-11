@@ -6,7 +6,7 @@ GOBIN=$(shell go env GOBIN)
 endif
 
 GOIMPORTS ?= go run -modfile hack/go.mod golang.org/x/tools/cmd/goimports
-DOCKER_ORG ?= garethjevans
+DOCKER_ORG ?==registry.harbor.learn.tapsme.org/convention-service
 
 .PHONY: all
 all: test

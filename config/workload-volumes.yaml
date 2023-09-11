@@ -1,0 +1,18 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  labels:
+    app.kubernetes.io/part-of: app-golang-kpack
+    apps.tanzu.vmware.com/workload-type: web
+  name: convention-workload-with-volumes
+  namespace: jeremy
+spec:
+  params:
+  - name: annotations
+    value:
+      x95castle1.org/storage: '{"volumes":[{"name":"config-vol","configMap":{"name":"log-config","items":[{"key":"log_level","path":"log_level"}]}}],"volumeMounts":[{"name":"config-vol","mountPath":"/etc/config"}]}'
+  source:
+    git:
+      ref:
+        branch: main
+      url: https://github.com/carto-run/app-golang-kpack
