@@ -1,10 +1,35 @@
 # simple-conventions
 
-a sample conventions server for adding in liveiness/readiness probes.
+A sample conventions server for adding in liveiness/readiness/startup probes, volumes/volume mounts, container arguments, and environment variables.
+
+## Component Overview
+
+ADD IN HOW THIS THING WORKS!!!
+
+## Prequisites
+
+* Golang 1.20+ - ```brew install go```
+* Pack CLI - ```brew install buildpacks/tap/pack```
+* Set the default builder - ```pack config default-builder paketobuildpacks/builder-jammy-tiny ```
+
+## Build Image and Push Image to Repository
+
+To build the image and push it to your repo you need to first set the ```DOCKER_ORG``` environment variable to the location to push the image and then run the ```make image``` command. This will build the image using ```pack``` and then push the image with the ```latest``` tag to the repo set in the ```DOCKER_ORG``` environment variable.
+
+```
+export DOCKER_ORG=registry.harbor.learn.tapsme.org/convention-service
+
+make build
+
+...
+
+Successfully built image registry.harbor.learn.tapsme.org/convention-service/simple-conventions:latest
+
+```
 
 ## Installation
 
-To install the conventions server use: 
+To install the conventions server onto the Cluster use: 
 
 ```
 make install
@@ -76,7 +101,7 @@ Below is an example workload that configured two probes.
     ...
 ```
 
-### Build this in TAP
+### Build the service using TAP
 
 ```
 tanzu apps workload create simple-conventions \
