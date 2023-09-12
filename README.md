@@ -8,15 +8,15 @@ ADD IN HOW THIS THING WORKS!!!
 
 ## Prequisites
 
-* Golang 1.20+ 
+* [Golang 1.20+](https://go.dev/doc/install)
 ```
 brew install go
 ```
-* Pack CLI 
+* [Pack CLI](https://buildpacks.io/docs/tools/pack/)
 ```
 brew install buildpacks/tap/pack
 ```
-* Set the default builder 
+* [Set the default builder](https://buildpacks.io/docs/tools/pack/cli/pack_config_default-builder/)
 ```
 pack config default-builder paketobuildpacks/builder-jammy-tiny
 ```
