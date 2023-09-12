@@ -44,13 +44,30 @@ This will create a new namespace `simple-convention` and configure cartographer 
 
 ## Available Options
 
-| Annotation | Description |
+| Annotation | Description | 
 | --- | --- |
-| `x95castle1.org/livenessProbe` | define a liveness probe |
+| `x95castle1.org/livenessProbe` | define a liveness probe | 
 | `x95castle1.org/readinessProbe` | define a readiness probe |
 | `x95castle1.org/startupProbe` | define a startup probe |
 | `x95castle1.org/storage` | define volume and volume mounts |
 | `x95castle1.org/args` | define container args |
+
+## Example Annotations
+
+```
+spec:
+  params:
+  - name: annotations
+    value:
+      x95castle1.org/livenessProbe: '{"exec":{"command":["cat","/tmp/healthy"]},"initialDelaySeconds":5,"periodSeconds":5}'
+      x95castle1.org/readinessProbe: '{"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":5,"periodSeconds":5}'
+      x95castle1.org/storage: '{"volumes":[{"name":"config-vol","configMap":{"name":"log-config","items":[{"key":"log_level","path":"log_level"}]}}],"volumeMounts":[{"name":"config-vol","mountPath":"/etc/config"}]}'
+      Add Startup
+      Add Args
+
+```
+
+Include how to convert.....
 
 ## An example Workload
 
