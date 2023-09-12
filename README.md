@@ -1,4 +1,4 @@
-# simple-conventions
+# Probes Convention Service
 
 A sample conventions server for adding in liveiness/readiness/startup probes, volumes/volume mounts, container arguments, and environment variables.
 
@@ -44,6 +44,8 @@ This will create a new namespace `simple-convention` and configure cartographer 
 | `x95castle1.org/livenessProbe` | define a liveness probe |
 | `x95castle1.org/readinessProbe` | define a readiness probe |
 | `x95castle1.org/startupProbe` | define a startup probe |
+| `x95castle1.org/storage` | define volume and volume mounts |
+| `x95castle1.org/args` | define container args |
 
 ## An example Workload
 
