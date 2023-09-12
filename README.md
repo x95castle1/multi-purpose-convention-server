@@ -9,11 +9,17 @@ ADD IN HOW THIS THING WORKS!!!
 ## Prequisites
 
 * Golang 1.20+ 
-```brew install go```
+```
+brew install go
+```
 * Pack CLI 
-```brew install buildpacks/tap/pack```
+```
+brew install buildpacks/tap/pack
+```
 * Set the default builder 
-```pack config default-builder paketobuildpacks/builder-jammy-tiny ```
+```
+pack config default-builder paketobuildpacks/builder-jammy-tiny
+```
 
 ## Build Image and Push Image to Repository
 
