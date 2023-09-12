@@ -33,11 +33,11 @@ image:
 
 .PHONY: install
 install: test ## Install conventions server
-	kubectl apply -f dist/server-it.yaml
+	kubectl apply -f install-server/server-it.yaml
 
 .PHONY: uninstall
 uninstall: ## Uninstall conventions server
-	kubectl delete -f dist/server-it.yaml
+	kubectl delete -f install-server/server-it.yaml
 
 .PHONY: restart
 restart: ## Kill the convention pods and allow them to be restarted

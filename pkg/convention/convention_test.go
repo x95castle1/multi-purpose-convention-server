@@ -1,4 +1,4 @@
-package conventions
+package convention
 
 import (
 	"context"
