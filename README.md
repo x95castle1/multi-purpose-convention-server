@@ -8,9 +8,12 @@ ADD IN HOW THIS THING WORKS!!!
 
 ## Prequisites
 
-* Golang 1.20+ - ```brew install go```
-* Pack CLI - ```brew install buildpacks/tap/pack```
-* Set the default builder - ```pack config default-builder paketobuildpacks/builder-jammy-tiny ```
+* Golang 1.20+ 
+```brew install go```
+* Pack CLI 
+```brew install buildpacks/tap/pack```
+* Set the default builder 
+```pack config default-builder paketobuildpacks/builder-jammy-tiny ```
 
 ## Build Image and Push Image to Repository
 
@@ -19,11 +22,7 @@ To build the image and push it to your repo you need to first set the ```DOCKER_
 ```
 export DOCKER_ORG=registry.harbor.learn.tapsme.org/convention-service
 
-make build
-
-...
-
-Successfully built image registry.harbor.learn.tapsme.org/convention-service/simple-conventions:latest
+make image
 
 ```
 
