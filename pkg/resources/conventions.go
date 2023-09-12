@@ -3,24 +3,38 @@ package resources
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 
 	corev1 "k8s.io/api/core/v1"
 
-	convention "github.com/x95castle1/probes-convention-service/pkg/convention"
+	"github.com/x95castle1/probes-convention-service/pkg/convention"
 )
 
-const Prefix = "x95castle1.org"
+const (
+	Prefix                  = "x95castle1.org"
+	ReadinessId             = Prefix + "-readiness"
+	ReadinessAnnotation     = Prefix + "/readinessProbe"
+	LivenessId              = Prefix + "-liveness"
+	LivenessAnnotation      = Prefix + "/livenessProbe"
+	StartupId               = Prefix + "-startup"
+	StartUpAnnotation       = Prefix + "/startupProbe"
+	ArgsId                  = Prefix + "-args"
+	ArgsAnnotation          = Prefix + "/args"
+	StorageId               = Prefix + "-storage"
+	StorageAnnotation       = Prefix + "/storage"
+	WorkloadNameId          = Prefix + "-carto-run-workload-name"
+	WorkloadNameLabel       = "carto.run/workload-name"
+	WorkloadNameEnvVariable = "CARTO_RUN_WORKLOAD_NAME"
+)
 
 var Conventions = []convention.Convention{
 	&convention.BasicConvention{
-		Id: fmt.Sprintf("%s-readiness", Prefix),
+		Id: ReadinessId,
 		Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
-			return getAnnotation(target, fmt.Sprintf("%s/readinessProbe", Prefix)) != ""
+			return getAnnotation(target, ReadinessAnnotation) != ""
 		},
 		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
-			readinessProbe := getAnnotation(target, fmt.Sprintf("%s/readinessProbe", Prefix))
+			readinessProbe := getAnnotation(target, ReadinessAnnotation)
 
 			for i := range target.Spec.Containers {
 				c := &target.Spec.Containers[i]
@@ -39,12 +53,12 @@ var Conventions = []convention.Convention{
 	},
 
 	&convention.BasicConvention{
-		Id: fmt.Sprintf("%s-liveness", Prefix),
+		Id: LivenessId,
 		Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
-			return getAnnotation(target, fmt.Sprintf("%s/livenessProbe", Prefix)) != ""
+			return getAnnotation(target, LivenessAnnotation) != ""
 		},
 		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
-			livenessProbe := getAnnotation(target, fmt.Sprintf("%s/livenessProbe", Prefix))
+			livenessProbe := getAnnotation(target, LivenessAnnotation)
 
 			for i := range target.Spec.Containers {
 				c := &target.Spec.Containers[i]
@@ -63,12 +77,12 @@ var Conventions = []convention.Convention{
 	},
 
 	&convention.BasicConvention{
-		Id: fmt.Sprintf("%s-startup", Prefix),
+		Id: StartupId,
 		Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
-			return getAnnotation(target, fmt.Sprintf("%s/startupProbe", Prefix)) != ""
+			return getAnnotation(target, StartUpAnnotation) != ""
 		},
 		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
-			startupProbe := getAnnotation(target, fmt.Sprintf("%s/startupProbe", Prefix))
+			startupProbe := getAnnotation(target, StartUpAnnotation)
 
 			for i := range target.Spec.Containers {
 				c := &target.Spec.Containers[i]
@@ -87,17 +101,17 @@ var Conventions = []convention.Convention{
 	},
 
 	&convention.BasicConvention{
-		Id: fmt.Sprintf("%s-carto-run-workload-name", Prefix),
+		Id: WorkloadNameId,
 		Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
-			return getLabel(target, "carto.run/workload-name") != ""
+			return getLabel(target, WorkloadNameLabel) != ""
 		},
 		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
-			value := getLabel(target, "carto.run/workload-name")
+			value := getLabel(target, WorkloadNameLabel)
 
 			for i := range target.Spec.Containers {
 				c := &target.Spec.Containers[i]
 				addEnvVar(c, corev1.EnvVar{
-					Name:  "CARTO_RUN_WORKLOAD_NAME",
+					Name:  WorkloadNameEnvVariable,
 					Value: value,
 				})
 			}
@@ -107,12 +121,12 @@ var Conventions = []convention.Convention{
 	},
 
 	&convention.BasicConvention{
-		Id: fmt.Sprintf("%s-args", Prefix),
+		Id: ArgsId,
 		Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
-			return getAnnotation(target, fmt.Sprintf("%s/args", Prefix)) != ""
+			return getAnnotation(target, ArgsAnnotation) != ""
 		},
 		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
-			arguments := getAnnotation(target, fmt.Sprintf("%s/args", Prefix))
+			arguments := getAnnotation(target, ArgsAnnotation)
 
 			for i := range target.Spec.Containers {
 				c := &target.Spec.Containers[i]
@@ -129,12 +143,12 @@ var Conventions = []convention.Convention{
 	},
 
 	&convention.BasicConvention{
-		Id: fmt.Sprintf("%s-storage", Prefix),
+		Id: StorageId,
 		Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
-			return getAnnotation(target, fmt.Sprintf("%s/storage", Prefix)) != ""
+			return getAnnotation(target, StorageAnnotation) != ""
 		},
 		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
-			storage := getAnnotation(target, fmt.Sprintf("%s/storage", Prefix))
+			storage := getAnnotation(target, StorageAnnotation)
 
 			for i := range target.Spec.Containers {
 				c := &target.Spec.Containers[i]
