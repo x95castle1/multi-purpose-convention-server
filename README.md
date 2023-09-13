@@ -6,7 +6,9 @@ A sample convention server for adding in liveiness/readiness/startup probes, vol
 
 ADD IN HOW THIS THING WORKS!!!
 
-## Architecture
+## Convention Architecture
+
+![arch](convention-architecture.pdf)
 
 ## Prequisites
 
