@@ -166,6 +166,25 @@ var Conventions = []convention.Convention{
 			return nil
 		},
 	},
+
+	&convention.BasicConvention{
+		Id: TolerationId,
+		Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
+			return getAnnotation(target, TolerationAnnotation) != ""
+		},
+		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
+			tolerations := getAnnotation(target, TolerationAnnotation)
+
+			s, err := getTolerations(tolerations)
+			if err != nil {
+				return err
+			}
+
+			target.Spec.Tolerations = append(target.Spec.Tolerations, s...)
+
+			return nil
+		},
+	},
 }
 
 // getArguments parse the arguments into a string array
@@ -212,6 +231,12 @@ func addEnvVar(container *corev1.Container, envvar corev1.EnvVar) bool {
 	}
 	container.Env = append(container.Env, envvar)
 	return true
+}
+
+func getTolerations(config string) (*[]corev1.Toleration, error) {
+	tolerations := []corev1.Toleration{}
+	err := json.Unmarshal([]byte(config), &tolerations)
+	return &tolerations, err
 }
 
 type Storage struct {
