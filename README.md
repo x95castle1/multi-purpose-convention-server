@@ -8,7 +8,9 @@ ADD IN HOW THIS THING WORKS!!!
 
 ## Convention Architecture
 
-![arch](convention-architecture.pdf)
+[Cartographer Convention Documentation](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/cartographer-conventions-about.html)
+
+![arch](images/sconvention-architecture.jpg)
 
 ## Prequisites
 
