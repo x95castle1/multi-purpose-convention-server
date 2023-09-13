@@ -2,56 +2,56 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: simple-convention
+  name: multi-purpose-convention
 
 ---
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: simple-selfsigned-issuer
-  namespace: simple-convention
+  name: multi-purpose-convention-selfsigned-issuer
+  namespace: multi-purpose-convention
 spec:
   selfSigned: {}
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: simple-webhook-cert
-  namespace: simple-convention
+  name: multi-purpose-convention-webhook-cert
+  namespace: multi-purpose-convention
 spec:
   subject:
     organizations:
     - vmware
     organizationalUnits:
     - tanzu
-  commonName: simple-webhook.simple-convention.svc
+  commonName: multi-purpose-convention-webhook.multi-purpose-convention.svc
   dnsNames:
-  - simple-webhook.simple-convention.svc
-  - simple-webhook.simple-convention.svc.cluster.local
+  - multi-purpose-convention-webhook.multi-purpose-convention.svc
+  - multi-purpose-convention-webhook.multi-purpose-convention.svc.cluster.local
   issuerRef:
     kind: Issuer
-    name: simple-selfsigned-issuer
-  secretName: simple-webhook-cert
+    name: multi-purpose-convention-selfsigned-issuer
+  secretName: multi-purpose-convention-webhook-cert
   revisionHistoryLimit: 10
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple-webhook
-  namespace: simple-convention
+  name: multi-purpose-convention-webhook
+  namespace: multi-purpose-convention
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: simple-webhook
+      app: multi-purpose-convention-webhook
   template:
     metadata:
       labels:
-        app: simple-webhook
+        app: multi-purpose-convention-webhook
     spec:
       containers:
       - name: webhook
-        image: registry.harbor.learn.tapsme.org/convention-service/simple-conventions:latest
+        image: registry.harbor.learn.tapsme.org/convention-service/multi-purpose-convention:latest
         imagePullPolicy: Always
         env:
         - name: PORT
@@ -84,16 +84,16 @@ spec:
         - name: certs
           secret:
             defaultMode: 420
-            secretName: simple-webhook-cert
+            secretName: multi-purpose-convention-webhook-cert
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: simple-webhook
-  namespace: simple-convention
+  name: multi-purpose-convention-webhook
+  namespace: multi-purpose-convention
 spec:
   selector:
-    app: simple-webhook
+    app: multi-purpose-convention-webhook
   ports:
     - protocol: TCP
       port: 443
@@ -102,13 +102,13 @@ spec:
 apiVersion: conventions.carto.run/v1alpha1
 kind: ClusterPodConvention
 metadata:
-  name: simple-convention
+  name: multi-purpose-convention
 spec:
   webhook:
     certificate:
-      namespace: simple-convention
-      name: simple-webhook-cert
+      namespace: multi-purpose-convention
+      name: multi-purpose-convention-webhook-cert
     clientConfig:
       service:
-        name: simple-webhook
-        namespace: simple-convention
+        name: multi-purpose-convention-webhook
+        namespace: multi-purpose-convention

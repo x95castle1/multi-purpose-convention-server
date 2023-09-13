@@ -6,7 +6,7 @@ GOBIN=$(shell go env GOBIN)
 endif
 
 GOIMPORTS ?= go run -modfile hack/go.mod golang.org/x/tools/cmd/goimports
-DOCKER_ORG ?==registry.harbor.learn.tapsme.org/convention-service
+DOCKER_ORG ?= registry.harbor.learn.tapsme.org/convention-service
 
 .PHONY: all
 all: test
@@ -29,7 +29,7 @@ vet: ## Run go vet against code
 
 .PHONY: image
 image:
-	pack build --publish $(DOCKER_ORG)/simple-conventions:latest
+	pack build --publish $(DOCKER_ORG)/multi-purpose-convention:latest
 
 .PHONY: install
 install: test ## Install conventions server
@@ -41,7 +41,7 @@ uninstall: ## Uninstall conventions server
 
 .PHONY: restart
 restart: ## Kill the convention pods and allow them to be restarted
-	kubectl get pods -n simple-convention | grep simple | awk '{print $$1}' | xargs kubectl delete pods -n simple-convention
+	kubectl get pods -n multi-purpose-convention | grep simple | awk '{print $$1}' | xargs kubectl delete pods -n multi-purpose-convention
 
 .PHONY: apply
 apply:

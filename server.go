@@ -21,7 +21,7 @@ import (
 
 const (
 	logComponentKey  = "component"
-	logComponentName = "simple-conventions"
+	logComponentName = "multi-purpose-convention"
 )
 
 func main() {
