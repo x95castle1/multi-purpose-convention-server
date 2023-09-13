@@ -21,7 +21,7 @@ test: fmt vet ## Run tests
 
 .PHONY: fmt
 fmt: ## Run go fmt against code
-	$(GOIMPORTS) --local github.com/x95castle1/probes-convention-service -w .
+	$(GOIMPORTS) --local github.com/x95castle1/multi-purpose-convention-server -w .
 
 .PHONY: vet
 vet: ## Run go vet against code

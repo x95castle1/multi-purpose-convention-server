@@ -1,4 +1,4 @@
-# Probes Convention Service
+# Multi-Purpose Convention Server
 
 A sample convention server for adding in liveiness/readiness/startup probes, volumes/volume mounts, container arguments, and environment variables to a pod spec for a TAP workload.
 
@@ -136,7 +136,7 @@ You can also use TAP to build and deploy the server to make it availabe as a con
 tanzu apps workload create simple-conventions \
   --namespace dev \
   --git-branch main \
-  --git-repo https://github.com/x95castle1/probes-convention-service \
+  --git-repo https://github.com/x95castle1/multi-purpose-convention-server \
   --label apps.tanzu.vmware.com/has-tests=true \
   --label app.kubernetes.io/part-of=simple-conventions \
   --param-yaml testing_pipeline_matching_labels='{"apps.tanzu.vmware.com/pipeline":"golang-pipeline"}' \

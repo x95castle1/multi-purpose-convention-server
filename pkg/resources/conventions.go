@@ -7,7 +7,7 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/x95castle1/probes-convention-service/pkg/convention"
+	"github.com/x95castle1/convention-server-framework/pkg/convention"
 )
 
 const (

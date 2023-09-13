@@ -1,4 +1,4 @@
-module github.com/x95castle1/probes-convention-service/tools
+module github.com/x95castle1/multi-purpose-convention-server/tools
 
 go 1.18
 
