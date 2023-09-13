@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "creationTimestamp": null,
+    "annotations": {
+      "x95castle1.org/args": "[\"one\",\"two\",\"three\"]"
+    }
+  },
+  "spec": {
+    "containers": [
+      {
+        "name": "workload",
+        "image": "sample-accelerators/tanzu-java-web-app",
+        "resources": {},
+        "ports" : [],
+        "args": ["one", "two", "three"]
+      }
+    ]
+  }
+}
