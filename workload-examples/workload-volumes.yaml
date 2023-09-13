@@ -2,7 +2,7 @@ apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
   labels:
-    app.kubernetes.io/part-of: app-golang-kpack
+    app.kubernetes.io/part-of: convention-workload-with-volumes
     apps.tanzu.vmware.com/workload-type: web
   name: convention-workload-with-volumes
   namespace: jeremy

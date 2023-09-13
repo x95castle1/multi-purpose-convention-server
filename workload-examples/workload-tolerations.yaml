@@ -1,0 +1,18 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  labels:
+    app.kubernetes.io/part-of: convention-workload-tolerations
+    apps.tanzu.vmware.com/workload-type: web
+  name: convention-workload-tolerations
+  namespace: jeremy
+spec:
+  params:
+  - name: annotations
+    value:
+      x95castle1.org/tolerations: '{"tolerations":[{"key":"rabeyta","operator":"Exists","effect":"NoSchedule"}]}'
+  source:
+    git:
+      ref:
+        branch: main
+      url: https://github.com/carto-run/app-golang-kpack

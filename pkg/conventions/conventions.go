@@ -233,10 +233,10 @@ func addEnvVar(container *corev1.Container, envvar corev1.EnvVar) bool {
 	return true
 }
 
-func getTolerations(config string) (*[]corev1.Toleration, error) {
+func getTolerations(config string) ([]corev1.Toleration, error) {
 	tolerations := []corev1.Toleration{}
 	err := json.Unmarshal([]byte(config), &tolerations)
-	return &tolerations, err
+	return tolerations, err
 }
 
 type Storage struct {

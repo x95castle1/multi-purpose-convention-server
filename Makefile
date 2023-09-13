@@ -41,7 +41,7 @@ uninstall: ## Uninstall conventions server
 
 .PHONY: restart
 restart: ## Kill the convention pods and allow them to be restarted
-	kubectl get pods -n multi-purpose-convention | grep simple | awk '{print $$1}' | xargs kubectl delete pods -n multi-purpose-convention
+	kubectl get pods -n multi-purpose-convention | grep webhook | awk '{print $$1}' | xargs kubectl delete pods -n multi-purpose-convention
 
 .PHONY: apply
 apply:
