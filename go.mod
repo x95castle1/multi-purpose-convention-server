@@ -5,11 +5,10 @@ go 1.20
 require (
 	github.com/go-logr/logr v1.2.4
 	github.com/go-logr/zapr v1.2.4
-	github.com/google/go-cmp v0.5.9
 	github.com/vmware-tanzu/cartographer-conventions/webhook v0.5.1
+	github.com/x95castle1/convention-server-framework v0.0.0-20230913182141-e31d11b764e3
 	go.uber.org/zap v1.24.0
 	k8s.io/api v0.27.4
-	k8s.io/apimachinery v0.27.4
 )
 
 require (
@@ -26,6 +25,7 @@ require (
 	golang.org/x/text v0.9.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	k8s.io/apimachinery v0.27.4 // indirect
 	k8s.io/klog/v2 v2.90.1 // indirect
 	k8s.io/utils v0.0.0-20230209194617-a36077c30491 // indirect
 	sigs.k8s.io/controller-runtime v0.15.0 // indirect

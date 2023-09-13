@@ -9,7 +9,9 @@ import (
 	"go.uber.org/zap/zapcore"
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/x95castle1/probes-convention-service/pkg/handler"
+	"github.com/x95castle1/convention-server-framework/pkg/handler"
+
+	"github.com/x95castle1/multi-purpose-convention-server/pkg/conventions"
 
 	"github.com/go-logr/logr"
 	"github.com/go-logr/zapr"
@@ -45,7 +47,7 @@ func main() {
 
 	// Setting an Anonymous Function to call the handler.AddConventions
 	c := func(template *corev1.PodTemplateSpec, images []webhook.ImageConfig) ([]string, error) {
-		return handler.AddConventions(logger, template, images)
+		return handler.AddConventions(logger, template, images, conventions.Conventions)
 	}
 
 	// Create a listener on the / root to call. This is the real HTTPServer.
