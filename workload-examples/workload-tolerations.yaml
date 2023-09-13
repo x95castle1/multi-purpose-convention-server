@@ -10,7 +10,7 @@ spec:
   params:
   - name: annotations
     value:
-      x95castle1.org/tolerations: '{"tolerations":[{"key":"rabeyta","operator":"Exists","effect":"NoSchedule"}]}'
+      x95castle1.org/tolerations: '[{"key":"rabeyta","operator":"Exists","effect":"NoSchedule"}]'
   source:
     git:
       ref:
