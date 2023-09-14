@@ -8,6 +8,8 @@ endif
 GOIMPORTS ?= go run -modfile hack/go.mod golang.org/x/tools/cmd/goimports
 DOCKER_ORG ?= registry.harbor.learn.tapsme.org/convention-service
 LATEST_TAG := $(shell git describe --tags --abbrev=0)
+DEV_IMAGE_LOCATION ?= harbor-repo.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo
+PROMOTION_IMAGE_LOCATION ?= projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo
 
 .PHONY: all
 all: test
@@ -62,6 +64,10 @@ apply:
 package:
 	kctrl package release --chdir ./carvel -v $(LATEST_TAG) --tag $(LATEST_TAG) --repo-output ./packagerepository -y
 	kctrl package repo release --chdir carvel/packagerepository -v $(LATEST_TAG) -y
+
+.PHONY: promote
+promote:
+	imgpkg --tty copy -b $(DEV_IMAGE_LOCATION):$(LATEST_TAG) --to-repo $(PROMOTION_IMAGE_LOCATION) --registry-response-header-timeout 1m --registry-retry-count 2
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target
