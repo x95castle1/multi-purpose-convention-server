@@ -2,10 +2,10 @@ apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
   creationTimestamp: null
-  name: multi-purpose-convention-server.conventions.tanzu.vmware.com.v0.1.0
+  name: multi-purpose-convention-server.conventions.tanzu.vmware.com.0.1.0
 spec:
   refName: multi-purpose-convention-server.conventions.tanzu.vmware.com
-  releasedAt: "2023-09-14T18:55:51Z"
+  releasedAt: "2023-09-14T20:23:36Z"
   template:
     spec:
       deploy:
@@ -67,4 +67,4 @@ spec:
               type: object
           type: object
       type: object
-  version: v0.1.0
+  version: 0.1.0
