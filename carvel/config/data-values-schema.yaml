@@ -1,0 +1,21 @@
+#@data/values-schema
+---
+#@schema/desc "Name for the convention server"
+name: multi-purpose-convention
+
+#@schema/desc "Deployment namespace for the convention server"
+namespace: multi-purpose-convention
+
+#@schema/desc "Annotation prefix "
+annotationPrefix: example.com
+
+resources:
+  limits:
+    #@schema/desc "Limits describes the maximum amount of cpu resources allowed."
+    cpu: 100m
+    memory: 256Mi
+  requests:
+    #@schema/desc "Requests describes the minimum amount of cpu resources required."
+    cpu: 100m
+    #@schema/desc "Requests describes the minimum amount of memory resources"
+    memory: 20Mi

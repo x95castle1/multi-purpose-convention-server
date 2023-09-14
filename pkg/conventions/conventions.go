@@ -4,34 +4,33 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"os"
 
 	corev1 "k8s.io/api/core/v1"
 
 	"github.com/x95castle1/convention-server-framework/pkg/convention"
 )
 
-const (
-	Prefix                  = "x95castle1.org"
-	ReadinessId             = Prefix + "-readiness"
-	ReadinessAnnotation     = Prefix + "/readinessProbe"
-	LivenessId              = Prefix + "-liveness"
-	LivenessAnnotation      = Prefix + "/livenessProbe"
-	StartupId               = Prefix + "-startup"
-	StartUpAnnotation       = Prefix + "/startupProbe"
-	ArgsId                  = Prefix + "-args"
-	ArgsAnnotation          = Prefix + "/args"
-	StorageId               = Prefix + "-storage"
-	StorageAnnotation       = Prefix + "/storage"
-	TolerationId            = Prefix + "-tolerations"
-	TolerationAnnotation    = Prefix + "/tolerations"
-	NodeSelectorId          = Prefix + "-nodeSelector"
-	NodeSelectorAnnotation  = Prefix + "/nodeSelector"
-	AffinityId              = Prefix + "-affinity"
-	AffinityAnnotation      = Prefix + "/affinity"
-	WorkloadNameId          = Prefix + "-carto-run-workload-name"
-	WorkloadNameLabel       = "carto.run/workload-name"
-	WorkloadNameEnvVariable = "CARTO_RUN_WORKLOAD_NAME"
-)
+var Prefix = os.Getenv("ANNOTATION_PREFIX")
+var ReadinessId = Prefix + "-readiness"
+var ReadinessAnnotation = Prefix + "/readinessProbe"
+var LivenessId = Prefix + "-liveness"
+var LivenessAnnotation = Prefix + "/livenessProbe"
+var StartupId = Prefix + "-startup"
+var StartUpAnnotation = Prefix + "/startupProbe"
+var ArgsId = Prefix + "-args"
+var ArgsAnnotation = Prefix + "/args"
+var StorageId = Prefix + "-storage"
+var StorageAnnotation = Prefix + "/storage"
+var TolerationId = Prefix + "-tolerations"
+var TolerationAnnotation = Prefix + "/tolerations"
+var NodeSelectorId = Prefix + "-nodeSelector"
+var NodeSelectorAnnotation = Prefix + "/nodeSelector"
+var AffinityId = Prefix + "-affinity"
+var AffinityAnnotation = Prefix + "/affinity"
+var WorkloadNameId = Prefix + "-carto-run-workload-name"
+var WorkloadNameLabel = "carto.run/workload-name"
+var WorkloadNameEnvVariable = "CARTO_RUN_WORKLOAD_NAME"
 
 var Conventions = []convention.Convention{
 	&convention.BasicConvention{

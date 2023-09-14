@@ -1,0 +1,15 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: conventions.carto.run/v1alpha1
+kind: ClusterPodConvention
+metadata:
+  name: #@ data.values.name
+spec:
+  webhook:
+    certificate:
+      namespace: #@ data.values.namespace
+      name: #@ data.values.name + "-webhook-cert"
+    clientConfig:
+      service:
+        name: #@ data.values.name + "-webhook"
+        namespace: #@ data.values.namespace

@@ -1,0 +1,28 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: #@ data.values.name + "-selfsigned-issuer"
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: #@ data.values.name + "-webhook-cert"
+spec:
+  subject:
+    organizations:
+      - vmware
+    organizationalUnits:
+      - tanzu
+  commonName: #@ data.values.name + "-webhook" + data.values.namespace + ".svc"
+  dnsNames:
+    - #@ data.values.name + "-webhook" + data.values.namespace + ".svc"
+    - #@ data.values.name + "-webhook" + data.values.namespace + ".svc.local"
+  issuerRef:
+    kind: Issuer
+    name: #@ data.values.name + "-selfsigned-issuer"
+  secretName: #@ data.values.name + "-webhook-cert"
+  revisionHistoryLimit: 10

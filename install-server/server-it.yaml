@@ -56,6 +56,8 @@ spec:
         env:
         - name: PORT
           value: "8443"
+        - name: ANNOTATION_PREFIX
+          value: "x95castle1.org"
         ports:
         - containerPort: 8443
           name: webhook

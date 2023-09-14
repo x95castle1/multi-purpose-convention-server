@@ -1,0 +1,56 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: multi-purpose-convention-server.conventions.tanzu.vmware.com.0.0.0
+spec:
+  refName: multi-purpose-convention-server.conventions.tanzu.vmware.com
+  releasedAt: null
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - git: {}
+      template:
+      - ytt:
+          paths:
+          - config
+      - kbld: {}
+  valuesSchema:
+    openAPIv3: null
+  version: 0.0.0
+
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  creationTimestamp: null
+  name: multi-purpose-convention-server.conventions.tanzu.vmware.com
+spec:
+  displayName: multi-purpose-convention-server
+  longDescription: multi purpose convention server
+  maintainers:
+  - name: Tanzu
+  providerName: VMware
+  shortDescription: multi purpose convention server
+  supportDescription: https://tanzu.vmware.com/support
+
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  annotations:
+    kctrl.carvel.dev/local-fetch-0: .
+  creationTimestamp: null
+  name: multi-purpose-convention-server
+spec:
+  packageRef:
+    refName: multi-purpose-convention-server.conventions.tanzu.vmware.com
+    versionSelection:
+      constraints: 0.0.0
+  serviceAccountName: multi-purpose-convention-server-sa
+status:
+  conditions: null
+  friendlyDescription: ""
+  observedGeneration: 0

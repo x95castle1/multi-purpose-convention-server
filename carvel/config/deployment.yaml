@@ -1,0 +1,48 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: #@ data.values.name + "-webhook"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: #@ data.values.name + "-webhook"
+  template:
+    metadata:
+      labels:
+        app: #@ data.values.name + "-webhook"
+    spec:
+      containers:
+        - name: webhook
+          image: registry.harbor.learn.tapsme.org/convention-service/multi-purpose-convention:latest
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "8443"
+            - name: ANNOTATION_PREFIX
+              value: #@ data.values.annotationPrefix
+          resources: #@ data.values.resources
+          ports:
+            - containerPort: 8443
+              name: webhook
+          livenessProbe:
+            httpGet:
+              scheme: HTTPS
+              port: webhook
+              path: /healthz
+          readinessProbe:
+            httpGet:
+              scheme: HTTPS
+              port: webhook
+              path: /healthz
+          volumeMounts:
+            - name: certs
+              mountPath: /config/certs
+              readOnly: true
+      volumes:
+        - name: certs
+          secret:
+            defaultMode: 420
+            secretName: #@ data.values.name + "-webhook-cert"

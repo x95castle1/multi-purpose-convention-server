@@ -1,0 +1,25 @@
+apiVersion: kctrl.carvel.dev/v1alpha1
+kind: PackageBuild
+metadata:
+  creationTimestamp: null
+  name: multi-purpose-convention-server.conventions.tanzu.vmware.com
+spec:
+  release:
+  - resource: {}
+  template:
+    spec:
+      app:
+        spec:
+          deploy:
+          - kapp: {}
+          template:
+          - ytt:
+              paths:
+              - config
+          - kbld: {}
+      export:
+      - imgpkgBundle:
+          image: harbor-repo.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server
+          useKbldImagesLock: true
+        includePaths:
+        - config
