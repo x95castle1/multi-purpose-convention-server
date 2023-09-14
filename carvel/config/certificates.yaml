@@ -17,10 +17,10 @@ spec:
       - vmware
     organizationalUnits:
       - tanzu
-  commonName: #@ data.values.name + "-webhook" + data.values.namespace + ".svc"
+  commonName: #@ data.values.name + "-webhook." + data.values.namespace + ".svc"
   dnsNames:
-    - #@ data.values.name + "-webhook" + data.values.namespace + ".svc"
-    - #@ data.values.name + "-webhook" + data.values.namespace + ".svc.local"
+    - #@ data.values.name + "-webhook." + data.values.namespace + ".svc"
+    - #@ data.values.name + "-webhook." + data.values.namespace + ".svc.local"
   issuerRef:
     kind: Issuer
     name: #@ data.values.name + "-selfsigned-issuer"
