@@ -207,6 +207,31 @@ var Conventions = []convention.Convention{
 			return nil
 		},
 	},
+
+	&convention.BasicConvention{
+		Id: AffinityId,
+		Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
+			return getAnnotation(target, AffinityAnnotation) != ""
+		},
+		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
+			affinity := getAnnotation(target, AffinityAnnotation)
+
+			parsedAffinity, err := parseAffinity(affinity)
+			if err != nil {
+				return err
+			}
+
+			target.Spec.Affinity = parsedAffinity
+
+			return nil
+		},
+	},
+}
+
+func parseAffinity(arguments string) (*corev1.Affinity, error) {
+	var a corev1.Affinity
+	err := json.Unmarshal([]byte(arguments), &a)
+	return &a, err
 }
 
 // getArguments parse the arguments into a string array
