@@ -56,7 +56,7 @@ To install the conventions server onto the Cluster use:
 make install
 ```
 
-This will create a new namespace `simple-convention` and configure cartographer conventions to use this convention provider.
+This will create a new namespace `multi-purpose-convention` and configure cartographer conventions to use this convention provider.
 
 ## Available Options
 
