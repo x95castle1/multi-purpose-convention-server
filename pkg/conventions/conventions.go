@@ -188,6 +188,25 @@ var Conventions = []convention.Convention{
 			return nil
 		},
 	},
+
+	&convention.BasicConvention{
+		Id: NodeSelectorId,
+		Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
+			return getAnnotation(target, NodeSelectorAnnotation) != ""
+		},
+		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
+			nodeSelector := getAnnotation(target, NodeSelectorAnnotation)
+
+			parsedSelector, err := parseMap(nodeSelector)
+			if err != nil {
+				return err
+			}
+
+			target.Spec.NodeSelector = parsedSelector
+
+			return nil
+		},
+	},
 }
 
 // getArguments parse the arguments into a string array
@@ -240,6 +259,12 @@ func getTolerations(config string) ([]corev1.Toleration, error) {
 	tolerations := []corev1.Toleration{}
 	err := json.Unmarshal([]byte(config), &tolerations)
 	return tolerations, err
+}
+
+func parseMap(arguments string) (map[string]string, error) {
+	var a map[string]string
+	err := json.Unmarshal([]byte(arguments), &a)
+	return a, err
 }
 
 type Storage struct {
