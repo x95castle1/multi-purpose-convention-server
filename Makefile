@@ -46,13 +46,29 @@ uninstall: ## Uninstall conventions server
 restart: ## Kill the convention pods and allow them to be restarted
 	kubectl get pods -n multi-purpose-convention | grep webhook | awk '{print $$1}' | xargs kubectl delete pods -n multi-purpose-convention
 
-.PHONY: apply
-apply:
-	kubectl apply -f workload-examples/.
+.PHONY: applyw
+applyw:
+	kubectl apply -f ./examples/workload/.
 
-.PHONY: unapply
-unapply:
-	kubectl delete -f workload-examples/.
+.PHONY: unapplyw
+unapplyw:
+	kubectl delete -f ./examples/workload/.
+
+.PHONY: applyp
+applyp:
+	tanzu package repository add multi-purpose-conventions-repository \
+	--url projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo:$(LATEST_TAG) \
+	--namespace tap-install
+	tanzu package install multi-purpose-convention-server  \
+  	--package multi-purpose-convention-server.conventions.tanzu.vmware.com \
+  	--values-file ./examples/package/values.yaml \
+  	--version $(LATEST_TAG) \
+  	--namespace tap-install
+
+.PHONY: unapplyp
+unapplyp:
+	tanzu package installed delete multi-purpose-convention-server -n tap-install
+	tanzu package repository delete multi-purpose-conventions-repository -n tap-install
 
 .PHONY: package
 package:
