@@ -10,7 +10,7 @@ spec:
   params:
   - name: annotations
     value:
-      x95castle1.org/nodeSelector: '{"beta.kubernetes.io/os": "linux"}''
+      x95castle1.org/nodeSelector: '{"beta.kubernetes.io/os": "linux"}'
   source:
     git:
       ref:
