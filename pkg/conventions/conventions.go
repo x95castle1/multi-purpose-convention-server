@@ -141,6 +141,7 @@ var Conventions = []convention.Convention{
 					return err
 				}
 
+				log.Printf("Adding Args %+v", a)
 				c.Args = append(c.Args, a...)
 			}
 			return nil
@@ -163,8 +164,10 @@ var Conventions = []convention.Convention{
 					return err
 				}
 
-				c.VolumeMounts = append(c.VolumeMounts, s.VolumeMounts...)
+				log.Printf("Adding Volumes %+v", s.Volumes)
 				target.Spec.Volumes = append(target.Spec.Volumes, s.Volumes...)
+				log.Printf("Adding VolumeMounts %+v", s.VolumeMounts)
+				c.VolumeMounts = append(c.VolumeMounts, s.VolumeMounts...)
 			}
 			return nil
 		},
@@ -183,6 +186,7 @@ var Conventions = []convention.Convention{
 				return err
 			}
 
+			log.Printf("Adding Tolerations %+v", s)
 			target.Spec.Tolerations = append(target.Spec.Tolerations, s...)
 
 			return nil
@@ -202,6 +206,7 @@ var Conventions = []convention.Convention{
 				return err
 			}
 
+			log.Printf("Adding NodeSelector %+v", parsedSelector)
 			target.Spec.NodeSelector = parsedSelector
 
 			return nil
@@ -221,6 +226,7 @@ var Conventions = []convention.Convention{
 				return err
 			}
 
+			log.Printf("Adding Affinity %+v", parsedAffinity)
 			target.Spec.Affinity = parsedAffinity
 
 			return nil

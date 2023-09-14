@@ -26,6 +26,7 @@ const (
 
 func main() {
 	ctx := context.Background()
+	annotationPrefix := os.Getenv("ANNOTATION_PREFIX")
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "9000"
@@ -43,7 +44,7 @@ func main() {
 	logger := l.Sugar().With(logComponentKey, logComponentName)
 	ctx = logr.NewContext(ctx, zapr.NewLogger(l))
 
-	logger.Info("Convention server starting on: %v ...", port)
+	logger.Info("Convention server starting on port: %v using prefix: %v", port, annotationPrefix)
 
 	// Setting an Anonymous Function to call the handler.AddConventions
 	c := func(template *corev1.PodTemplateSpec, images []webhook.ImageConfig) ([]string, error) {

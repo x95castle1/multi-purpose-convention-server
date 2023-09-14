@@ -7,9 +7,16 @@ endif
 
 GOIMPORTS ?= go run -modfile hack/go.mod golang.org/x/tools/cmd/goimports
 DOCKER_ORG ?= registry.harbor.learn.tapsme.org/convention-service
-LATEST_TAG := $(shell git describe --tags --abbrev=0)
 DEV_IMAGE_LOCATION ?= harbor-repo.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo
 PROMOTION_IMAGE_LOCATION ?= projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo
+
+# TAG LOGIC
+LATEST_TAG := $(shell git describe --tags --abbrev=0)
+MAJOR_VERSION=$(shell echo $(LATEST_TAG) | cut -d. -f1)
+MINOR_VERSION=$(shell echo $(LATEST_TAG) | cut -d. -f2)
+PATCH_VERSION=$(shell echo $(LATEST_TAG) | cut -d. -f3)
+NEW_MINOR_VERSION:= $(shell echo $$(($(MINOR_VERSION)+1)))
+NEXT_TAG="$(MAJOR_VERSION).$(NEW_MINOR_VERSION).$(PATCH_VERSION)"
 
 .PHONY: all
 all: test
@@ -80,6 +87,14 @@ package:
 .PHONY: promote
 promote:
 	imgpkg --tty copy -b $(DEV_IMAGE_LOCATION):$(LATEST_TAG) --to-repo $(PROMOTION_IMAGE_LOCATION) --registry-response-header-timeout 1m --registry-retry-count 2
+
+.PHONY: tag
+tag:
+	git tag $(NEXT_TAG)
+	git push origin $(NEXT_TAG)
+
+.PHONY: release
+release: unapplyw build tag image package promote applyp applyw
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target
