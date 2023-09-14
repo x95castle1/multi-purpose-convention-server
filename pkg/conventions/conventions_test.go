@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"conventions"
 
 	webhookv1alpha1 "github.com/vmware-tanzu/cartographer-conventions/webhook/api/v1alpha1"
 
@@ -13,16 +14,13 @@ import (
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	"github.com/x95castle1/convention-server-framework/pkg/convention"
-	"github.com/x95castle1/probes-convention-service/pkg/resources"
 )
 
 const imageDefault = "sample-accelerators/tanzu-java-web-app"
 
 func Test_addConventions(t *testing.T) {
 	testdataPath := "testdata"
-	var emptyAppliedConventions []string
+mptyAppliedCon	var eventions []string
 	l := zap.NewNop().Sugar()
 	type args struct {
 		logger   *zap.SugaredLogger
@@ -52,7 +50,7 @@ func Test_addConventions(t *testing.T) {
 			name: "readinessProbe",
 			args: args{
 				logger:   l,
-				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/readinessProbe", convention.Prefix), "{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"),
+				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/readinessProbe", conventions.Prefix), "{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"),
 				images: []webhook.ImageConfig{
 					{
 						Image: imageDefault,
@@ -65,7 +63,7 @@ func Test_addConventions(t *testing.T) {
 					},
 				},
 			},
-			want:               []string{fmt.Sprintf("%s-readiness", resources.Prefix)},
+			want:               []string{fmt.Sprintf("%s-readiness", conventions.Prefix)},
 			wantErr:            false,
 			validateTemplate:   true,
 			wantedTemplateFile: "readinessProbe.json",
@@ -74,7 +72,7 @@ func Test_addConventions(t *testing.T) {
 			name: "livenessProbe",
 			args: args{
 				logger:   l,
-				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/livenessProbe", resources.Prefix), "{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"),
+				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/livenessProbe", conventions.Prefix), "{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"),
 				images: []webhook.ImageConfig{
 					{
 						Image: imageDefault,
@@ -87,7 +85,7 @@ func Test_addConventions(t *testing.T) {
 					},
 				},
 			},
-			want:               []string{fmt.Sprintf("%s-liveness", resources.Prefix)},
+			want:               []string{fmt.Sprintf("%s-liveness", conventions.Prefix)},
 			wantErr:            false,
 			validateTemplate:   true,
 			wantedTemplateFile: "livenessProbe.json",
@@ -96,7 +94,7 @@ func Test_addConventions(t *testing.T) {
 			name: "startupProbe",
 			args: args{
 				logger:   l,
-				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/startupProbe", resources.Prefix), "{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"),
+				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/startupProbe", conventions.Prefix), "{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"),
 				images: []webhook.ImageConfig{
 					{
 						Image: imageDefault,
@@ -109,7 +107,7 @@ func Test_addConventions(t *testing.T) {
 					},
 				},
 			},
-			want:               []string{fmt.Sprintf("%s-startup", resources.Prefix)},
+			want:               []string{fmt.Sprintf("%s-startup", conventions.Prefix)},
 			wantErr:            false,
 			validateTemplate:   true,
 			wantedTemplateFile: "startupProbe.json",
@@ -131,7 +129,7 @@ func Test_addConventions(t *testing.T) {
 					},
 				},
 			},
-			want:               []string{fmt.Sprintf("%s-carto-run-workload-name", resources.Prefix)},
+			want:               []string{fmt.Sprintf("%s-carto-run-workload-name", conventions.Prefix)},
 			wantErr:            false,
 			validateTemplate:   true,
 			wantedTemplateFile: "cartoRunWorkloadName.json",
@@ -140,7 +138,7 @@ func Test_addConventions(t *testing.T) {
 			name: "args",
 			args: args{
 				logger:   l,
-				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/args", resources.Prefix), "[\"one\",\"two\",\"three\"]"),
+				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/args", conventions.Prefix), "[\"one\",\"two\",\"three\"]"),
 				images: []webhook.ImageConfig{
 					{
 						Image: imageDefault,
@@ -153,7 +151,7 @@ func Test_addConventions(t *testing.T) {
 					},
 				},
 			},
-			want:               []string{fmt.Sprintf("%s-args", resources.Prefix)},
+			want:               []string{fmt.Sprintf("%s-args", conventions.Prefix)},
 			wantErr:            false,
 			validateTemplate:   true,
 			wantedTemplateFile: "args.json",
@@ -162,7 +160,7 @@ func Test_addConventions(t *testing.T) {
 			name: "storage",
 			args: args{
 				logger:   l,
-				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/storage", resources.Prefix), "{\"volumeMounts\":[{\"mountPath\":\"/test\",\"name\":\"test\"}],\"volumes\":[{\"name\":\"test\",\"emptyDir\":{}}]}"),
+				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/storage", conventions.Prefix), "{\"volumeMounts\":[{\"mountPath\":\"/test\",\"name\":\"test\"}],\"volumes\":[{\"name\":\"test\",\"emptyDir\":{}}]}"),
 				images: []webhook.ImageConfig{
 					{
 						Image: imageDefault,
@@ -175,7 +173,7 @@ func Test_addConventions(t *testing.T) {
 					},
 				},
 			},
-			want:               []string{fmt.Sprintf("%s-storage", resources.Prefix)},
+			want:               []string{fmt.Sprintf("%s-storage", conventions.Prefix)},
 			wantErr:            false,
 			validateTemplate:   true,
 			wantedTemplateFile: "storage.json",

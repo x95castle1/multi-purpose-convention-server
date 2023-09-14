@@ -1,16 +1,21 @@
 # Multi-Purpose Convention Server
 
-A sample convention server for adding in liveiness/readiness/startup probes, volumes/volume mounts, container arguments, and environment variables to a pod spec for a TAP workload.
+A sample convention server for adding in liveiness/readiness/startup probes, volumes/volume mounts, container arguments, node affinity, tolerations, and environment variables to a pod spec for a TAP workload.
 
 ## Component Overview
 
-ADD IN HOW THIS THING WORKS!!!
+This project is a template 
+
+server.go
+
+convention.go 
+
 
 ## Convention Architecture
 
 [Cartographer Convention Documentation](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/cartographer-conventions-about.html)
 
-![arch](images/sconvention-architecture.jpg)
+![arch](images/convention-architecture.jpg)
 
 ## Prequisites
 
@@ -57,8 +62,11 @@ This will create a new namespace `simple-convention` and configure cartographer 
 | `x95castle1.org/startupProbe` | define a startup probe |
 | `x95castle1.org/storage` | define volume and volume mounts |
 | `x95castle1.org/args` | define container args |
+| `x95castle1.org/tolerations` | define tolerations for a pod |
+| `x95castle1.org/nodeSelector` | define a node selector for a pod |
+| `x95castle1.org/affinity` | define scheduling affinity for a pod |
 
-## Example Annotations
+## Example Annotations for a Workload
 
 ```
 spec:
@@ -67,13 +75,19 @@ spec:
     value:
       x95castle1.org/livenessProbe: '{"exec":{"command":["cat","/tmp/healthy"]},"initialDelaySeconds":5,"periodSeconds":5}'
       x95castle1.org/readinessProbe: '{"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":5,"periodSeconds":5}'
+      x95castle1.org/startupProbe: '{"httpGet":{"path":"/healthz","port":"liveness-port"},"failureThreshold":30,"periodSeconds":10}'
       x95castle1.org/storage: '{"volumes":[{"name":"config-vol","configMap":{"name":"log-config","items":[{"key":"log_level","path":"log_level"}]}}],"volumeMounts":[{"name":"config-vol","mountPath":"/etc/config"}]}'
-      Add Startup
-      Add Args
+      x95castle1.org/args: '{["HOSTNAME","KUBERNETES_PORT"]}'
+      x95castle1.org/tolerations: '[{"key":"rabeyta","operator":"Exists","effect":"NoSchedule"}]'
+      x95castle1.org/nodeSelector: '{"disktype":"ssd"}'
+      x95castle1.org/affinity: '{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["antarctica-east1","antarctica-west1"]}]}]},"preferredDuringSchedulingIgnoredDuringExecution":[{"weight":1,"preference":{"matchExpressions":[{"key":"another-node-label-key","operator":"In","values":["another-node-label-value"]}]}}]}}'
 
 ```
 
-Include how to convert.....
+It can sometimes be tricky to convert yaml to json to pass through the annotation. You can use these utilities:
+
+* [Convert Yaml to JSON](https://onlineyamltools.com/convert-yaml-to-json)
+* [Compact JSON](https://www.text-utils.com/json-formatter/)
 
 ## An example Workload
 
@@ -130,15 +144,15 @@ spec:
 
 ### Build the service using TAP
 
-You can also use TAP to build and deploy the server to make it availabe as a convention server.
+You can also use TAP to build and deploy the server to make it available as a convention server.
 
 ```
-tanzu apps workload create simple-conventions \
+tanzu apps workload create multi-purpose-convention-server \
   --namespace dev \
   --git-branch main \
   --git-repo https://github.com/x95castle1/multi-purpose-convention-server \
   --label apps.tanzu.vmware.com/has-tests=true \
-  --label app.kubernetes.io/part-of=simple-conventions \
+  --label app.kubernetes.io/part-of=multi-purpose-convention-server \
   --param-yaml testing_pipeline_matching_labels='{"apps.tanzu.vmware.com/pipeline":"golang-pipeline"}' \
   --type web \
   --yes
