@@ -48,17 +48,11 @@ restart: ## Kill the convention pods and allow them to be restarted
 
 .PHONY: apply
 apply:
-	kubectl delete workload -n dev app-golang-kpack --ignore-not-found
-	tanzu apps workload create app-golang-kpack \
-		--namespace dev \
-  		--git-branch main \
-  		--git-repo https://github.com/carto-run/app-golang-kpack \
-		--param-yaml annotations='{"x95castle1.org/readinessProbe":"{\"httpGet\":{\"path\":\"/healthz\",\"port\":8080},\"initialDelaySeconds\":5,\"periodSeconds\":5}","x95castle1.org/livenessProbe":"{\"exec\":{\"command\":[\"cat\",\"/tmp/healthy\"]},\"initialDelaySeconds\":5,\"periodSeconds\":5}"}' \
-  		--label apps.tanzu.vmware.com/has-tests=true \
-  		--label app.kubernetes.io/part-of=app-golang-kpack \
-  		--param-yaml testing_pipeline_matching_labels='{"apps.tanzu.vmware.com/pipeline":"golang-pipeline"}' \
-  		--type web \
-  		--yes
+	kubectl apply -f workload-examples/.
+
+.PHONY: unapply
+unapply:
+	kubectl delete -f workload-examples/.
 
 .PHONY: package
 package:
