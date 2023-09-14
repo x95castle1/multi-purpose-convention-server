@@ -64,13 +64,13 @@ unapplyw:
 .PHONY: applyp
 applyp:
 	tanzu package repository add multi-purpose-conventions-repository \
-	--url projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo:$(LATEST_TAG) \
+	--url projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo:$(shell git describe --tags --abbrev=0) \
 	--namespace tap-install \
 	--yes
 	tanzu package install multi-purpose-convention-server  \
   	--package multi-purpose-convention-server.conventions.tanzu.vmware.com \
   	--values-file ./examples/package/values.yaml \
-  	--version $(LATEST_TAG) \
+  	--version $(shell git describe --tags --abbrev=0) \
   	--namespace tap-install \
 		--yes
 
@@ -81,12 +81,12 @@ unapplyp:
 
 .PHONY: package
 package:
-	kctrl package release --chdir ./carvel -v $(LATEST_TAG) --tag $(LATEST_TAG) --repo-output ./packagerepository -y
-	kctrl package repo release --chdir carvel/packagerepository -v $(LATEST_TAG) -y
+	kctrl package release --chdir ./carvel -v $(shell git describe --tags --abbrev=0) --tag $(shell git describe --tags --abbrev=0) --repo-output ./packagerepository -y
+	kctrl package repo release --chdir carvel/packagerepository -v $(shell git describe --tags --abbrev=0) -y
 
 .PHONY: promote
 promote:
-	imgpkg --tty copy -b $(DEV_IMAGE_LOCATION):$(LATEST_TAG) --to-repo $(PROMOTION_IMAGE_LOCATION) --registry-response-header-timeout 1m --registry-retry-count 2
+	imgpkg --tty copy -b $(DEV_IMAGE_LOCATION):$(shell git describe --tags --abbrev=0) --to-repo $(PROMOTION_IMAGE_LOCATION) --registry-response-header-timeout 1m --registry-retry-count 2
 
 .PHONY: tag
 tag:
@@ -94,7 +94,7 @@ tag:
 	git push origin $(NEXT_TAG)
 
 .PHONY: release
-release: unapplyw build tag image package promote applyp applyw
+release: build tag image package promote applyp applyw
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target
