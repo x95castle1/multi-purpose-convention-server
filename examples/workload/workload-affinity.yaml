@@ -1,0 +1,18 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  labels:
+    app.kubernetes.io/part-of: convention-workload-affinity
+    apps.tanzu.vmware.com/workload-type: web
+  name: convention-workload-affinity
+  namespace: jeremy
+spec:
+  params:
+  - name: annotations
+    value:
+      x95castle1.org/affinity: '{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["antarctica-east1","antarctica-west1"]}]}]},"preferredDuringSchedulingIgnoredDuringExecution":[{"weight":1,"preference":{"matchExpressions":[{"key":"another-node-label-key","operator":"In","values":["another-node-label-value"]}]}}]}}'
+  source:
+    git:
+      ref:
+        branch: main
+      url: https://github.com/carto-run/app-golang-kpack

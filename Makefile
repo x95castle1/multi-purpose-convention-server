@@ -58,17 +58,19 @@ unapplyw:
 applyp:
 	tanzu package repository add multi-purpose-conventions-repository \
 	--url projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo:$(LATEST_TAG) \
-	--namespace tap-install
+	--namespace tap-install \
+	--yes
 	tanzu package install multi-purpose-convention-server  \
   	--package multi-purpose-convention-server.conventions.tanzu.vmware.com \
   	--values-file ./examples/package/values.yaml \
   	--version $(LATEST_TAG) \
-  	--namespace tap-install
+  	--namespace tap-install \
+		--yes
 
 .PHONY: unapplyp
 unapplyp:
-	tanzu package installed delete multi-purpose-convention-server -n tap-install
-	tanzu package repository delete multi-purpose-conventions-repository -n tap-install
+	tanzu package installed delete multi-purpose-convention-server -n tap-install --yes
+	tanzu package repository delete multi-purpose-conventions-repository -n tap-install --yes
 
 .PHONY: package
 package:
