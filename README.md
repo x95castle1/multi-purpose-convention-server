@@ -4,12 +4,17 @@ A sample convention server for adding in liveiness/readiness/startup probes, vol
 
 ## Component Overview
 
-This project is a template 
+This project can be used as a template/exemplar to create your own conventions for a Supply Chain. Boilerplate code with a handler and convention interface has been moved to the convention-server-framework package. To reuse this code you just need to implement your own convention.go logic. 
 
-server.go
+### server.go
 
-convention.go 
+This creates a basic http server to handle webhook calls from the Convention controller. It calls the handler to execute your conventions. 
 
+This component shouldn't need changes (unless you have different logging needs, etc.)
+
+### convention.go 
+
+This contains the logic for your conventions. Each convention is part of variable array that overrides the functions in the convention interface from the framework package. 
 
 ## Convention Architecture
 
