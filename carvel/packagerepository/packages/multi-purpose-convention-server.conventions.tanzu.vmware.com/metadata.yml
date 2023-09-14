@@ -1,0 +1,13 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  creationTimestamp: null
+  name: multi-purpose-convention-server.conventions.tanzu.vmware.com
+spec:
+  displayName: multi-purpose-convention-server
+  longDescription: multi purpose convention server
+  maintainers:
+  - name: Tanzu
+  providerName: VMware
+  shortDescription: multi purpose convention server
+  supportDescription: https://tanzu.vmware.com/support

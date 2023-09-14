@@ -1,6 +1,7 @@
 apiVersion: kctrl.carvel.dev/v1alpha1
 kind: PackageRepositoryBuild
 metadata:
+  creationTimestamp: null
   name: multi-purpose-convention-server-repo.conventions.tanzu.vmware.com
 spec:
   export:

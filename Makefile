@@ -7,6 +7,7 @@ endif
 
 GOIMPORTS ?= go run -modfile hack/go.mod golang.org/x/tools/cmd/goimports
 DOCKER_ORG ?= registry.harbor.learn.tapsme.org/convention-service
+LATEST_TAG := $(shell git describe --tags --abbrev=0)
 
 .PHONY: all
 all: test
@@ -56,6 +57,11 @@ apply:
   		--param-yaml testing_pipeline_matching_labels='{"apps.tanzu.vmware.com/pipeline":"golang-pipeline"}' \
   		--type web \
   		--yes
+
+.PHONY: package
+package:
+	kctrl package release --chdir ./carvel -v $(LATEST_TAG) --tag $(LATEST_TAG) --repo-output ./packagerepository -y
+	kctrl package repo release --chdir carvel/packagerepository -v $(LATEST_TAG) -y
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target
