@@ -28,7 +28,7 @@ spec:
             runAsUser: 1000
           #@ end
             allowPrivilegeEscalation: false
-          image: registry.harbor.learn.tapsme.org/convention-service/multi-purpose-convention@sha256:4e8d4283f59ef8d6785070e4d4940bf900275091b41cfddb85fb5f027815f523
+          image: registry.harbor.learn.tapsme.org/convention-service/multi-purpose-convention@sha256:d016cddbc8da48377ae8d9027a2f0f5fea58b4823b6cd030481675989be074d6
           imagePullPolicy: Always
           env:
             - name: PORT
