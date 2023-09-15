@@ -95,8 +95,8 @@ tag:
 	git tag $(NEXT_TAG)
 	git push origin $(NEXT_TAG)
 
-.PHONY: updateLatest
-updateLatest:
+.PHONY: updateLatestTagVariable
+updateLatestTagVariable:
 	$(eval LATEST_TAG=$(NEXT_TAG))
 
 .PHONY: commitReleasedFiles
@@ -113,9 +113,17 @@ stash:
 stashPop:
 	git stash pop
 
+.PHONY: updateTemplateImage
+updateTemplateImage:
+	$(eval IMAGE_URL="https://registry.harbor.learn.tapsme.org/api/v2.0/projects/convention-service/repositories/multi-purpose-convention/artifacts/$(LATEST_TAG)?page=1&page_size=10&with_tag=false&with_label=false&with_scan_overview=false&with_accessory=false&with_signature=false&with_immutable_status=false")
+	echo $(IMAGE_URL)
+	$(eval LATEST_DIGEST=$(shell curl -X GET $(IMAGE_URL) -H 'accept: application/json' | jq -r .digest))
+	echo $(LATEST_DIGEST)
+	gsed -i "s/.*convention-service\/multi-purpose-convention.*/          image: registry.harbor.learn.tapsme.org\/convention-service\/multi-purpose-convention@${LATEST_DIGEST}/g" ./carvel/config/deployment.yaml
+
 # future, clone main and perform release on that vs stash/unstash
 .PHONY: release
-release: stash build tag updateLatest image package commitReleasedFiles promote stashPop
+release: stash build tag updateLatestTagVariable image updateTemplateImage package commitReleasedFiles promote stashPop
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target
