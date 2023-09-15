@@ -2,13 +2,13 @@ apiVersion: packaging.carvel.dev/v1alpha1
 kind: PackageRepository
 metadata:
   annotations:
-    kctrl.carvel.dev/repository-version: 0.12.0
-  creationTimestamp: "2023-09-15T20:36:22Z"
+    kctrl.carvel.dev/repository-version: 0.15.0
+  creationTimestamp: "2023-09-15T21:06:46Z"
   name: multi-purpose-convention-server-repo.conventions.tanzu.vmware.com
 spec:
   fetch:
     imgpkgBundle:
-      image: harbor-repo.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo@sha256:e67d6a76baaeeb470ba971e1a7316f1706a82fe07fe2222eb10b39b63816e1cf
+      image: harbor-repo.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo@sha256:518841bf9eda519644c0efbd41243f3da720e266942e9a132df9959811126fab
 status:
   conditions: null
   friendlyDescription: ""
