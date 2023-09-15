@@ -28,9 +28,11 @@ var NodeSelectorId = Prefix + "-nodeSelector"
 var NodeSelectorAnnotation = Prefix + "/nodeSelector"
 var AffinityId = Prefix + "-affinity"
 var AffinityAnnotation = Prefix + "/affinity"
-var WorkloadNameId = Prefix + "-carto-run-workload-name"
-var WorkloadNameLabel = "carto.run/workload-name"
-var WorkloadNameEnvVariable = "CARTO_RUN_WORKLOAD_NAME"
+
+//Example of how you can add environment variable
+//var WorkloadNameId = Prefix + "-carto-run-workload-name"
+//var WorkloadNameLabel = "carto.run/workload-name"
+//var WorkloadNameEnvVariable = "CARTO_RUN_WORKLOAD_NAME"
 
 var Conventions = []convention.Convention{
 	&convention.BasicConvention{
@@ -105,25 +107,26 @@ var Conventions = []convention.Convention{
 		},
 	},
 
-	&convention.BasicConvention{
-		Id: WorkloadNameId,
-		Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
-			return getLabel(target, WorkloadNameLabel) != ""
-		},
-		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
-			value := getLabel(target, WorkloadNameLabel)
+	// Commented out: Example of how you can add something as an environment variable
+	// &convention.BasicConvention{
+	// 	Id: WorkloadNameId,
+	// 	Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
+	// 		return getLabel(target, WorkloadNameLabel) != ""
+	// 	},
+	// 	Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
+	// 		value := getLabel(target, WorkloadNameLabel)
 
-			for i := range target.Spec.Containers {
-				c := &target.Spec.Containers[i]
-				addEnvVar(c, corev1.EnvVar{
-					Name:  WorkloadNameEnvVariable,
-					Value: value,
-				})
-			}
+	// 		for i := range target.Spec.Containers {
+	// 			c := &target.Spec.Containers[i]
+	// 			addEnvVar(c, corev1.EnvVar{
+	// 				Name:  WorkloadNameEnvVariable,
+	// 				Value: value,
+	// 			})
+	// 		}
 
-			return nil
-		},
-	},
+	// 		return nil
+	// 	},
+	// },
 
 	&convention.BasicConvention{
 		Id: ArgsId,
