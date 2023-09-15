@@ -122,9 +122,21 @@ updateTemplateImage:
 	gsed -i "s/.*convention-service\/multi-purpose-convention.*/          image: registry.harbor.learn.tapsme.org\/convention-service\/multi-purpose-convention@${LATEST_DIGEST}/g" ./carvel/config/deployment.yaml
 	gsed -i "s/.*convention-service\/multi-purpose-convention.*/        image: registry.harbor.learn.tapsme.org\/convention-service\/multi-purpose-convention@${LATEST_DIGEST}/g" ./install-server/server-it.yaml
 
+.PHONY: updateGoDeps
+updateGoDeps:
+	go get -u
+	go mod tidy
+
+.PHONY: commitGoDeps
+commitGoDeps:
+	git add .
+	git commit -m "bump go deps: $(NEXT_TAG)"
+	git push
+
+
 # future, clone main and perform release on that vs stash/unstash
 .PHONY: release
-release: stash build tag updateLatestTagVariable image updateTemplateImage package commitReleasedFiles promote stashPop
+release: stash updateGoDeps commitGoDeps build tag updateLatestTagVariable image updateTemplateImage package commitReleasedFiles promote stashPop
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target
