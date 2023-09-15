@@ -6,9 +6,10 @@ name: multi-purpose-convention
 #@schema/desc "Deployment namespace for the convention server"
 namespace: multi-purpose-convention
 
-#@schema/desc "Annotation prefix "
+#@schema/desc "Annotation prefix"
 annotationPrefix: example.com
 
+#@schema/desc "Resource limits and requests"
 resources:
   limits:
     #@schema/desc "Limits describes the maximum amount of cpu resources allowed."
@@ -19,3 +20,8 @@ resources:
     cpu: 100m
     #@schema/desc "Requests describes the minimum amount of memory resources"
     memory: 20Mi
+
+#@schema/desc "K8s Distribution - set to openshift if using openshift"
+kubernetes_distribution: ""
+#@schema/desc "K8s Version - used for openshift support / logic"
+kubernetes_version: ""

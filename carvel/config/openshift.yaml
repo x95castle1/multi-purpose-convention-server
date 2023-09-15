@@ -1,0 +1,102 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:assert", "assert")
+
+#@ kubernetes_distribution = data.values.kubernetes_distribution
+#@ kubernetes_version = data.values.kubernetes_version
+
+#@ def sem_ver(s):
+#@   ver = ()
+#@   for v in s.split("."):
+#@     if v.isdigit():
+#@        ver = ver + (int(v),)
+#@     else:
+#@        #! this means that 1.24.x is valid
+#@        ver = ver + (0,)
+#@     end
+#@   end
+#@   return ver
+#@ end
+
+#@ validFlavors = [None, "", "openshift"]
+#@ if kubernetes_distribution not in validFlavors:
+#@   assert.fail("{} not in {}".format(kubernetes_distribution, validFlavors))
+#@ end
+
+#@ if kubernetes_distribution.lower() == "openshift":
+
+#@ kubernetes_sem_ver = sem_ver(kubernetes_version)
+#@ if kubernetes_sem_ver < (1,24):
+---
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: #@ data.values.name + "-restricted-with-seccomp"
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: false
+allowPrivilegedContainer: false
+allowedCapabilities: null
+defaultAddCapabilities: null
+fsGroup:
+  type: MustRunAs
+priority: null
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+  - ALL
+runAsUser:
+  type: MustRunAsNonRoot
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: RunAsAny
+volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+seccompProfiles:
+  - runtime/default
+#@ end
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: #@ data.values.name + "-service-account"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: #@ data.values.name + "-service-account-cluster-role"
+rules:
+  - apiGroups:
+      - security.openshift.io
+    resourceNames:
+      #@ if/end kubernetes_sem_ver < (1,24):
+      - #@ data.values.name + "-restricted-with-seccomp"
+      #@ if/end kubernetes_sem_ver >= (1,24):
+      - restricted-v2
+    resources:
+      - securitycontextconstraints
+    verbs:
+      - use
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: #@ data.values.name + "-role-binding"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: #@ data.values.name + "-service-account-cluster-role"
+subjects:
+  - kind: ServiceAccount
+    name: #@ data.values.name + "-service-account"
+    namespace: #@ data.values.namespace
+#@ end

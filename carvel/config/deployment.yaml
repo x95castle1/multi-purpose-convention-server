@@ -14,8 +14,20 @@ spec:
       labels:
         app: #@ data.values.name + "-webhook"
     spec:
+      #@ if data.values.kubernetes_distribution == "openshift":
+      serviceAccountName: #@ data.values.name + "-service-account"
+      #@ end
+      securityContext:
+        runAsNonRoot: true
+      imagePullSecrets:
+        - name: reg-cred-convention
       containers:
         - name: webhook
+          securityContext:
+          #@ if data.values.kubernetes_distribution != "openshift":
+            runAsUser: 1000
+          #@ end
+            allowPrivilegeEscalation: false
           image: registry.harbor.learn.tapsme.org/convention-service/multi-purpose-convention:latest
           imagePullPolicy: Always
           env:
