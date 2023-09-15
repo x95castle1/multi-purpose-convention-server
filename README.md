@@ -42,6 +42,10 @@ pack config default-builder paketobuildpacks/builder-jammy-tiny
 
 * [Kctrl CLI](https://github.com/carvel-dev/carvel) - Needed for bundling and releasing as a Carvel Package
 
+* [jq](https://jqlang.github.io/jq/)
+
+* [gsed](https://formulae.brew.sh/formula/gnu-sed)
+
 ## Available Options
 
 | Annotation | Description | 
@@ -278,11 +282,19 @@ tanzu package install multi-purpose-convention-server  \
 --namespace tap-install
 ```
 
-## Install Locally
+## Setup Development Environment
 
+This project has `Makefile` to `make` life easier for you. 
 
+### Variables
 
-### Build Image and Push Image to Repository
+* `DOCKER_ORG` - The location to push the image built by the Makefile. Default: `registry.harbor.learn.tapsme.org/convention-service`
+* `DEV_IMAGE_LOCATION` - The image registry to push the carvel bundle. This is a staging repo. Default: `harbor-repo.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo`
+* `PROMOTION_IMAGE_LOCATION` - The image registry to imgpkg copy to make the carvel bundle publically available. Default: `projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo`
+* `INSTALL_NAMESPACE` - Namespace where the bundle is installed. Used to restart the pods. Default: `multi-purpose-convention`
+* `CONVENTION_NAME` - Name of the image repository project. Appended to DOCKER_ORG variable. Default:  `multi-purpose-convention`
+
+### make build 
 
 To build the image and push it to your repo you need to first set the `DOCKER_ORG` environment variable to the location to push the image and then run the `make image` command. This will build the image using `pack` and then push the image with the `latest` tag to the repo set in the `DOCKER_ORG` environment variable.
 
