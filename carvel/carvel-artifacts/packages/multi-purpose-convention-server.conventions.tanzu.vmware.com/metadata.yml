@@ -5,9 +5,9 @@ metadata:
   name: multi-purpose-convention-server.conventions.tanzu.vmware.com
 spec:
   displayName: multi-purpose-convention-server
-  longDescription: multi purpose convention server
+  longDescription: Set of conventions to enrich pod spec with volumes, probes, affinities
   maintainers:
   - name: Tanzu
   providerName: VMware
-  shortDescription: multi purpose convention server
+  shortDescription: Conventions to enrich pod spec
   supportDescription: https://tanzu.vmware.com/support

@@ -99,8 +99,14 @@ tag:
 updateLatest:
 	$(eval LATEST_TAG=$(NEXT_TAG))
 
+.PHONY: commitReleasedFiles
+commitReleasedFiles:
+	git add .
+	git commit -m "release artifacts for version: $(LATEST_TAG)"
+	git push
+
 .PHONY: release
-release: build tag updateLatest image package promote
+release: build tag updateLatest image package commitReleasedFiles promote
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target
