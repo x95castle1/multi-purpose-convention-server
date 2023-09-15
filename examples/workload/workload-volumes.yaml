@@ -10,6 +10,7 @@ spec:
   params:
   - name: annotations
     value:
+      autoscaling.knative.dev/minScale: "1"
       x95castle1.org/storage: '{"volumes":[{"name":"config-vol","configMap":{"name":"log-config","items":[{"key":"log_level","path":"log_level"}]}}],"volumeMounts":[{"name":"config-vol","mountPath":"/etc/config"}]}'
   source:
     git:

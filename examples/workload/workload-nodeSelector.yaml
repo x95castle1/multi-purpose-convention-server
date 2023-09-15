@@ -10,6 +10,7 @@ spec:
   params:
   - name: annotations
     value:
+      autoscaling.knative.dev/minScale: "1"
       x95castle1.org/nodeSelector: '{"beta.kubernetes.io/os": "linux"}'
   source:
     git:
