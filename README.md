@@ -237,14 +237,14 @@ configuration. You can add fields as needed to activate or deactivate behaviors.
 You can append the values to the `values.yaml` file. Create a `values.yaml` file
 by using the following configuration:
 
-    ```yaml
-    ---
-    annotationPrefix: ANNOTATION-PREFIX
-    ```
+  ```yaml
+  ---
+  annotationPrefix: ANNOTATION-PREFIX
+  ```
 
-    Where:
+  Where:
 
-    - `ANNOTATION-PREFIX` is the prefix you want to use on your annotation used in the workload. For example: `x95castle1` Defaults to `example.com`.
+  - `ANNOTATION-PREFIX` is the prefix you want to use on your annotation used in the workload. For example: `x95castle1` Defaults to `example.com`.
 
 ### Install Multi-Purpose-Convention-Server
 
