@@ -2,6 +2,8 @@
 
 A sample convention server for adding in liveiness/readiness/startup probes, volumes/volume mounts, container arguments, node affinity, tolerations, and environment variables to a pod spec for a TAP workload.
 
+Disclaimer: This is not an officially supported Convention Service from VMware.
+
 ## Component Overview
 
 This project can be used as a template/exemplar to create your own conventions for a Supply Chain. Boilerplate code with a handler and convention interface has been moved to the convention-server-framework package. To reuse this code you just need to implement your own convention.go logic. 
