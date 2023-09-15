@@ -9,14 +9,16 @@ GOIMPORTS ?= go run -modfile hack/go.mod golang.org/x/tools/cmd/goimports
 DOCKER_ORG ?= registry.harbor.learn.tapsme.org/convention-service
 DEV_IMAGE_LOCATION ?= harbor-repo.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo
 PROMOTION_IMAGE_LOCATION ?= projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo
+INSTALL_NAMESPACE ?= multi-purpose-convention
+CONVENTION_NAME ?= multi-purpose-convention# rename maybe to image name
 
 # TAG LOGIC
-LATEST_TAG := $(shell git describe --tags --abbrev=0)
+LATEST_TAG := $(shell git tag | sort -r --version-sort | head -n1)
 MAJOR_VERSION=$(shell echo $(LATEST_TAG) | cut -d. -f1)
 MINOR_VERSION=$(shell echo $(LATEST_TAG) | cut -d. -f2)
 PATCH_VERSION=$(shell echo $(LATEST_TAG) | cut -d. -f3)
 NEW_MINOR_VERSION:= $(shell echo $$(($(MINOR_VERSION)+1)))
-NEXT_TAG="$(MAJOR_VERSION).$(NEW_MINOR_VERSION).$(PATCH_VERSION)"
+NEXT_TAG=$(MAJOR_VERSION).$(NEW_MINOR_VERSION).$(PATCH_VERSION)
 
 .PHONY: all
 all: test
@@ -39,7 +41,7 @@ vet: ## Run go vet against code
 
 .PHONY: image
 image:
-	pack build --publish $(DOCKER_ORG)/multi-purpose-convention:latest
+	pack build --publish $(DOCKER_ORG)/$(CONVENTION_NAME):$(LATEST_TAG)
 
 .PHONY: install
 install: test ## Install conventions server
@@ -51,7 +53,7 @@ uninstall: ## Uninstall conventions server
 
 .PHONY: restart
 restart: ## Kill the convention pods and allow them to be restarted
-	kubectl get pods -n multi-purpose-convention | grep webhook | awk '{print $$1}' | xargs kubectl delete pods -n multi-purpose-convention
+	kubectl get pods -n $(INSTALL_NAMESPACE) | grep webhook | awk '{print $$1}' | xargs kubectl delete pods -n $(INSTALL_NAMESPACE)
 
 .PHONY: applyw
 applyw:
@@ -64,13 +66,13 @@ unapplyw:
 .PHONY: applyp
 applyp:
 	tanzu package repository add multi-purpose-conventions-repository \
-	--url projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo:$(shell git describe --tags --abbrev=0) \
+	--url projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo:$(LATEST_TAG) \
 	--namespace tap-install \
 	--yes
 	tanzu package install multi-purpose-convention-server  \
   	--package multi-purpose-convention-server.conventions.tanzu.vmware.com \
   	--values-file ./examples/package/values.yaml \
-  	--version $(shell git describe --tags --abbrev=0) \
+  	--version $(LATEST_TAG) \
   	--namespace tap-install \
 		--yes
 
@@ -81,20 +83,24 @@ unapplyp:
 
 .PHONY: package
 package:
-	kctrl package release --chdir ./carvel -v $(shell git describe --tags --abbrev=0) --tag $(shell git describe --tags --abbrev=0) --repo-output ./packagerepository -y
-	kctrl package repo release --chdir carvel/packagerepository -v $(shell git describe --tags --abbrev=0) -y
+	kctrl package release --chdir ./carvel -v $(LATEST_TAG) --tag $(LATEST_TAG) --repo-output ./packagerepository -y
+	kctrl package repo release --chdir carvel/packagerepository -v $(LATEST_TAG) -y
 
 .PHONY: promote
 promote:
-	imgpkg --tty copy -b $(DEV_IMAGE_LOCATION):$(shell git describe --tags --abbrev=0) --to-repo $(PROMOTION_IMAGE_LOCATION) --registry-response-header-timeout 1m --registry-retry-count 2
+	imgpkg --tty copy -b $(DEV_IMAGE_LOCATION):$(LATEST_TAG) --to-repo $(PROMOTION_IMAGE_LOCATION) --registry-response-header-timeout 1m --registry-retry-count 2
 
 .PHONY: tag
 tag:
 	git tag $(NEXT_TAG)
 	git push origin $(NEXT_TAG)
 
+.PHONY: updateLatest
+updateLatest:
+	$(eval LATEST_TAG=$(NEXT_TAG))
+
 .PHONY: release
-release: build tag image package promote applyp applyw
+release: build tag updateLatest image package promote
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target
