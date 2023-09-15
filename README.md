@@ -262,14 +262,14 @@ tanzu package install REFERENCE-NAME \
 
 Where:
 
-- `ANNOTATION-PREFIX` is the prefix you want to use on your annotation used in the workload. For example: `x95castle1` Defaults to `example.com`.
+- `ANNOTATION-PREFIX` is the prefix you want to use on your annotation used in the workload. For example: `x95castle1.org` Defaults to `example.com`.
 
 For example:
 
 ```console
 tanzu package install multi-purpose-convention-server  \
 --package multi-purpose-convention-server.conventions.tanzu.vmware.com \
---version 0.3.0 \
+--version 0.4.0 \
 --namespace tap-install
 ```
 
