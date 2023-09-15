@@ -76,7 +76,7 @@ It can sometimes be tricky to convert yaml to json to pass through the annotatio
 * [Convert Yaml to JSON](https://onlineyamltools.com/convert-yaml-to-json)
 * [Compact JSON](https://www.text-utils.com/json-formatter/)
 
-## An example Workload
+## Example Workload
 
 Below is an example workload that configured two probes.
 
@@ -254,7 +254,7 @@ The `values.yaml` file you created earlier is referenced with the `--values-file
 
 ```shell
 tanzu package install REFERENCE-NAME \
-  --package SCANNER-NAME \
+  --package PACKAGE-NAME \
   --version VERSION \
   --namespace tap-install \
   --values-file PATH-TO-VALUES-YAML
@@ -262,7 +262,10 @@ tanzu package install REFERENCE-NAME \
 
 Where:
 
-- `ANNOTATION-PREFIX` is the prefix you want to use on your annotation used in the workload. For example: `x95castle1.org` Defaults to `example.com`.
+- REFERENCE-NAME is the name referenced by the installed package. For example, multi-purpose-convention-server.
+- PACKAGE-NAME is the name of the convention package you retrieved earlier. For example, multi-purpose-convention-server.conventions.tanzu.vmware.com.
+- VERSION is your package version number. For example, 0.4.0
+- PATH-TO-VALUES-YAML is the path that points to the values.yaml file created earlier.
 
 For example:
 
