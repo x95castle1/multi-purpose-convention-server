@@ -9,5 +9,5 @@ spec:
   maintainers:
   - name: Tanzu
   providerName: VMware
-  shortDescription: multi purpose convention server
+  shortDescription: Set of conventions to enrich pod spec with volumes, probes, affinities
   supportDescription: https://tanzu.vmware.com/support

@@ -36,40 +36,22 @@ brew install buildpacks/tap/pack
 ```
 pack config default-builder paketobuildpacks/builder-jammy-tiny
 ```
+* [Tanzu CLI](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/install-tanzu-cli.html)
 
-## Build Image and Push Image to Repository
-
-To build the image and push it to your repo you need to first set the `DOCKER_ORG` environment variable to the location to push the image and then run the `make image` command. This will build the image using `pack` and then push the image with the `latest` tag to the repo set in the `DOCKER_ORG` environment variable.
-
-```
-export DOCKER_ORG=registry.harbor.learn.tapsme.org/convention-service
-
-make image
-
-```
-
-## Installation
-
-To install the conventions server onto the Cluster use: 
-
-```
-make install
-```
-
-This will create a new namespace `multi-purpose-convention` and configure cartographer conventions to use this convention provider.
+* [Kctrl CLI](https://github.com/carvel-dev/carvel) - Needed for bundling and releasing as a Carvel Package
 
 ## Available Options
 
 | Annotation | Description | 
 | --- | --- |
-| `x95castle1.org/livenessProbe` | define a liveness probe | 
-| `x95castle1.org/readinessProbe` | define a readiness probe |
-| `x95castle1.org/startupProbe` | define a startup probe |
-| `x95castle1.org/storage` | define volume and volume mounts |
-| `x95castle1.org/args` | define container args |
-| `x95castle1.org/tolerations` | define tolerations for a pod |
-| `x95castle1.org/nodeSelector` | define a node selector for a pod |
-| `x95castle1.org/affinity` | define scheduling affinity for a pod |
+| `example.com/livenessProbe` | define a liveness probe | 
+| `example.com/readinessProbe` | define a readiness probe |
+| `example.com/startupProbe` | define a startup probe |
+| `example.com/storage` | define volume and volume mounts |
+| `example.com/args` | define container args |
+| `example.com/tolerations` | define tolerations for a pod |
+| `example.com/nodeSelector` | define a node selector for a pod |
+| `example.com/affinity` | define scheduling affinity for a pod |
 
 ## Example Annotations for a Workload
 
@@ -78,14 +60,14 @@ spec:
   params:
   - name: annotations
     value:
-      x95castle1.org/livenessProbe: '{"exec":{"command":["cat","/tmp/healthy"]},"initialDelaySeconds":5,"periodSeconds":5}'
-      x95castle1.org/readinessProbe: '{"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":5,"periodSeconds":5}'
-      x95castle1.org/startupProbe: '{"httpGet":{"path":"/healthz","port":"liveness-port"},"failureThreshold":30,"periodSeconds":10}'
-      x95castle1.org/storage: '{"volumes":[{"name":"config-vol","configMap":{"name":"log-config","items":[{"key":"log_level","path":"log_level"}]}}],"volumeMounts":[{"name":"config-vol","mountPath":"/etc/config"}]}'
-      x95castle1.org/args: '{["HOSTNAME","KUBERNETES_PORT"]}'
-      x95castle1.org/tolerations: '[{"key":"rabeyta","operator":"Exists","effect":"NoSchedule"}]'
-      x95castle1.org/nodeSelector: '{"disktype":"ssd"}'
-      x95castle1.org/affinity: '{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["antarctica-east1","antarctica-west1"]}]}]},"preferredDuringSchedulingIgnoredDuringExecution":[{"weight":1,"preference":{"matchExpressions":[{"key":"another-node-label-key","operator":"In","values":["another-node-label-value"]}]}}]}}'
+      example.com/livenessProbe: '{"exec":{"command":["cat","/tmp/healthy"]},"initialDelaySeconds":5,"periodSeconds":5}'
+      example.com/readinessProbe: '{"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":5,"periodSeconds":5}'
+      example.com/startupProbe: '{"httpGet":{"path":"/healthz","port":"liveness-port"},"failureThreshold":30,"periodSeconds":10}'
+      example.com/storage: '{"volumes":[{"name":"config-vol","configMap":{"name":"log-config","items":[{"key":"log_level","path":"log_level"}]}}],"volumeMounts":[{"name":"config-vol","mountPath":"/etc/config"}]}'
+      example.com/args: '{["HOSTNAME","KUBERNETES_PORT"]}'
+      example.com/tolerations: '[{"key":"rabeyta","operator":"Exists","effect":"NoSchedule"}]'
+      example.com/nodeSelector: '{"disktype":"ssd"}'
+      example.com/affinity: '{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["antarctica-east1","antarctica-west1"]}]}]},"preferredDuringSchedulingIgnoredDuringExecution":[{"weight":1,"preference":{"matchExpressions":[{"key":"another-node-label-key","operator":"In","values":["another-node-label-value"]}]}}]}}'
 
 ```
 
@@ -111,8 +93,8 @@ spec:
   params:
   - name: annotations
     value:
-      x95castle1.org/livenessProbe: '{"exec":{"command":["cat","/tmp/healthy"]},"initialDelaySeconds":5,"periodSeconds":5}'
-      x95castle1.org/readinessProbe: '{"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":5,"periodSeconds":5}'
+      example.com/livenessProbe: '{"exec":{"command":["cat","/tmp/healthy"]},"initialDelaySeconds":5,"periodSeconds":5}'
+      example.com/readinessProbe: '{"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":5,"periodSeconds":5}'
   source:
     git:
       ref:
@@ -147,7 +129,174 @@ spec:
 ...
 ```
 
-### Build the service using TAP
+## Install on a Cluster
+
+The multi-purpose-convention-server has been conveniently packaged up via Carvel and can be installed on a TAP cluster via the Tanzu CLI.
+
+### Install via Carvel Package
+
+Run the following command to output a list of available tags.
+
+  ``` shell
+  imgpkg tag list -i projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo | sort -V
+  ```
+
+  For example:
+
+  ``` shell
+  imgpkg tag list -i projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo | sort -V
+
+  0.1.0
+  0.2.0
+  0.3.0
+  0.4.0
+  ```
+
+Use the latest version returned by the command above.
+
+We recommend to relocate the images from VMware Tanzu Network registry to
+your own container image registry before installing.
+
+1. Set up environment variables for installation by running:
+
+    ```console
+    export INSTALL_REGISTRY_USERNAME=MY-REGISTRY-USER
+    export INSTALL_REGISTRY_PASSWORD=MY-REGISTRY-PASSWORD
+    export INSTALL_REGISTRY_HOSTNAME=MY-REGISTRY
+    export VERSION=VERSION-NUMBER
+    export INSTALL_REPO=TARGET-REPOSITORY
+    ```
+
+    Where:
+
+    - `MY-REGISTRY-USER` is the user with write access to MY-REGISTRY.
+    - `MY-REGISTRY-PASSWORD` is the password for `MY-REGISTRY-USER`.
+    - `MY-REGISTRY` is your own registry.
+    - `VERSION` is your Multi-Purpose-Convention-Server version. For example, `0.4.0`.
+    - `TARGET-REPOSITORY` is your target repository, a directory or repository on
+      `MY-REGISTRY` that serves as the location for the installation files for
+      the conventions.
+
+2. Relocate the images with the imgpkg CLI by running:
+
+    ```shell
+    imgpkg copy -b projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo:${VERSION} --to-repo ${INSTALL_REGISTRY_HOSTNAME}/${INSTALL_REPO}/multi-purpose-convention-server-bundle-repo
+    ```
+
+3. Add Multi-Purpose-Convention-Server package repository to the cluster by running:
+
+    ```shell
+    tanzu package repository add multi-purpose-conventions-repository \
+      --url ${INSTALL_REGISTRY_HOSTNAME}/${INSTALL_REPO}/multi-purpose-convention-server-bundle-repo:$VERSION \
+      --namespace tap-install
+    ```
+
+4. Get the status of Multi-Purpose-Convention-Server  package repository, and ensure that the status updates to `Reconcile succeeded` by running:
+
+
+    ```shell
+    tanzu package repository get multi-purpose-conventions-repository --namespace tap-install
+    ```
+
+    For example:
+
+    ```console
+    tanzu package repository get multi-purpose-conventions-repository --namespace tap-install
+
+    NAMESPACE:               tap-install
+    NAME:                    multi-purpose-conventions-repository
+    SOURCE:                  (imgpkg) projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo:0.4.0
+    STATUS:                  Reconcile succeeded
+    CONDITIONS:              - type: ReconcileSucceeded
+      status: "True"
+      reason: ""
+      message: ""
+    USEFUL-ERROR-MESSAGE:
+    ```
+
+5. List the available packages by running:
+
+    ```shell
+    tanzu package available list --namespace tap-install
+    ```
+
+    For example:
+
+    ```console
+    $ tanzu package available list --namespace tap-install
+    / Retrieving available packages...
+      NAME                                                              DISPLAY-NAME                       SHORT-DESCRIPTION
+      multi-purpose-convention-server.conventions.tanzu.vmware.com      multi-purpose-convention-server    Set of conventions to enrich pod spec with volumes, probes, affinities
+    ```
+
+### Prepare Convention Configuration
+
+You can define the `--values-file` flag to customize the default configuration. You
+must define the following fields in the `values.yaml` file for the Convention Server
+configuration. You can add fields as needed to activate or deactivate behaviors.
+You can append the values to the `values.yaml` file. Create a `values.yaml` file
+by using the following configuration:
+
+    ```yaml
+    ---
+    annotationPrefix: ANNOTATION-PREFIX
+    ```
+
+    Where:
+
+    - `ANNOTATION-PREFIX` is the prefix you want to use on your annotation used in the workload. For example: `x95castle1` Defaults to `example.com`.
+
+### Install Multi-Purpose-Convention-Server
+
+Define the `--values-file` flag to customize the default configuration (Optional):
+
+The `values.yaml` file you created earlier is referenced with the `--values-file` flag when running your Tanzu install command:
+
+```console
+tanzu package install REFERENCE-NAME \
+  --package SCANNER-NAME \
+  --version VERSION \
+  --namespace tap-install \
+  --values-file PATH-TO-VALUES-YAML
+```
+
+Where:
+
+- `ANNOTATION-PREFIX` is the prefix you want to use on your annotation used in the workload. For example: `x95castle1` Defaults to `example.com`.
+
+For example:
+
+```console
+tanzu package install multi-purpose-convention-server  \
+--package multi-purpose-convention-server.conventions.tanzu.vmware.com \
+--version 0.3.0 \
+--namespace tap-install
+```
+
+## Install Locally
+### Build Image and Push Image to Repository
+
+To build the image and push it to your repo you need to first set the `DOCKER_ORG` environment variable to the location to push the image and then run the `make image` command. This will build the image using `pack` and then push the image with the `latest` tag to the repo set in the `DOCKER_ORG` environment variable.
+
+```
+export DOCKER_ORG=registry.harbor.learn.tapsme.org/convention-service
+
+make image
+
+```
+
+### Installation
+
+To install the conventions server onto the Cluster use: 
+
+```
+make install
+```
+
+This will create a new namespace `multi-purpose-convention` and configure cartographer conventions to use this convention provider.
+
+
+## Build the service using TAP
 
 You can also use TAP to build and deploy the server to make it available as a convention server.
 
