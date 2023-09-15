@@ -105,8 +105,17 @@ commitReleasedFiles:
 	git commit -m "release artifacts for version: $(LATEST_TAG)"
 	git push
 
+.PHONY: stash
+stash:
+	git stash -u
+
+.PHONY: stashPop
+stashPop:
+	git stash pop
+
+# future, clone main and perform release on that vs stash/unstash
 .PHONY: release
-release: build tag updateLatest image package commitReleasedFiles promote
+release: stash build tag updateLatest image package commitReleasedFiles promote stashPop
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target
