@@ -2,7 +2,7 @@
 
 A sample convention server for adding in liveiness/readiness/startup probes, volumes/volume mounts, container arguments, node affinity, tolerations, and environment variables to a pod spec for a TAP workload.
 
-Disclaimer: This is not an officially supported Convention Service from VMware.
+**Disclaimer:** This is not an officially supported Convention Service from VMware.
 
 ## Component Overview
 
