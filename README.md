@@ -25,15 +25,15 @@ This contains the logic for your conventions. Each convention is part of variabl
 ## Prequisites
 
 * [Golang 1.20+](https://go.dev/doc/install)
-```
+```shell
 brew install go
 ```
 * [Pack CLI](https://buildpacks.io/docs/tools/pack/)
-```
+```shell
 brew install buildpacks/tap/pack
 ```
 * [Set the default builder](https://buildpacks.io/docs/tools/pack/cli/pack_config_default-builder/)
-```
+```shell
 pack config default-builder paketobuildpacks/builder-jammy-tiny
 ```
 * [Tanzu CLI](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/install-tanzu-cli.html)
@@ -55,7 +55,7 @@ pack config default-builder paketobuildpacks/builder-jammy-tiny
 
 ## Example Annotations for a Workload
 
-```
+```yaml
 spec:
   params:
   - name: annotations
@@ -80,7 +80,7 @@ It can sometimes be tricky to convert yaml to json to pass through the annotatio
 
 Below is an example workload that configured two probes.
 
-```
+```yaml
 apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
@@ -106,7 +106,7 @@ You can find more examples in the [workload-examples folder](/workload-examples/
 
 ## Example Generated PodSpec with Probes
 
-```
+```yaml
 ...
 spec:
   containers:
@@ -137,13 +137,13 @@ The multi-purpose-convention-server has been conveniently packaged up via Carvel
 
 Run the following command to output a list of available tags.
 
-  ``` shell
+  ```shell
   imgpkg tag list -i projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo | sort -V
   ```
 
   For example:
 
-  ``` shell
+  ```shell
   imgpkg tag list -i projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo | sort -V
 
   0.1.0
@@ -159,7 +159,7 @@ your own container image registry before installing.
 
 1. Set up environment variables for installation by running:
 
-    ```console
+    ```shell
     export INSTALL_REGISTRY_USERNAME=MY-REGISTRY-USER
     export INSTALL_REGISTRY_PASSWORD=MY-REGISTRY-PASSWORD
     export INSTALL_REGISTRY_HOSTNAME=MY-REGISTRY
@@ -222,7 +222,7 @@ your own container image registry before installing.
 
     For example:
 
-    ```console
+    ```shell
     $ tanzu package available list --namespace tap-install
     / Retrieving available packages...
       NAME                                                              DISPLAY-NAME                       SHORT-DESCRIPTION
@@ -252,7 +252,7 @@ Define the `--values-file` flag to customize the default configuration (Optional
 
 The `values.yaml` file you created earlier is referenced with the `--values-file` flag when running your Tanzu install command:
 
-```console
+```shell
 tanzu package install REFERENCE-NAME \
   --package SCANNER-NAME \
   --version VERSION \
@@ -274,22 +274,24 @@ tanzu package install multi-purpose-convention-server  \
 ```
 
 ## Install Locally
+
+
+
 ### Build Image and Push Image to Repository
 
 To build the image and push it to your repo you need to first set the `DOCKER_ORG` environment variable to the location to push the image and then run the `make image` command. This will build the image using `pack` and then push the image with the `latest` tag to the repo set in the `DOCKER_ORG` environment variable.
 
-```
+```shell
 export DOCKER_ORG=registry.harbor.learn.tapsme.org/convention-service
 
 make image
-
 ```
 
 ### Installation
 
 To install the conventions server onto the Cluster use: 
 
-```
+```shell
 make install
 ```
 
@@ -300,7 +302,7 @@ This will create a new namespace `multi-purpose-convention` and configure cartog
 
 You can also use TAP to build and deploy the server to make it available as a convention server.
 
-```
+```shell
 tanzu apps workload create multi-purpose-convention-server \
   --namespace dev \
   --git-branch main \
