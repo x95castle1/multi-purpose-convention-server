@@ -4,6 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/part-of: convention-workload-nodeselector
     apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/language: golang
   name: convention-workload-nodeselector
   namespace: jeremy
 spec:
