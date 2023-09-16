@@ -294,15 +294,31 @@ This project has `Makefile` to `make` life easier for you.
 * `INSTALL_NAMESPACE` - Namespace where the bundle is installed. Used to restart the pods. Default: `multi-purpose-convention`
 * `CONVENTION_NAME` - Name of the image repository project. Appended to DOCKER_ORG variable. Default:  `multi-purpose-convention`
 
-### make build 
-
-To build the image and push it to your repo you need to first set the `DOCKER_ORG` environment variable to the location to push the image and then run the `make image` command. This will build the image using `pack` and then push the image with the `latest` tag to the repo set in the `DOCKER_ORG` environment variable.
-
 ```shell
 export DOCKER_ORG=registry.harbor.learn.tapsme.org/convention-service
-
-make image
 ```
+
+### make build 
+
+### make image
+
+### make install
+
+### make uninstall
+
+### make restart
+
+### make applyw
+
+### make unapplyw
+
+### make applyp
+
+### make applyw
+
+### make package
+
+### make release
 
 ### Installation
 
@@ -314,19 +330,6 @@ make install
 
 This will create a new namespace `multi-purpose-convention` and configure cartographer conventions to use this convention provider.
 
+## Packaging
 
-## Build the service using TAP
-
-You can also use TAP to build and deploy the server to make it available as a convention server.
-
-```shell
-tanzu apps workload create multi-purpose-convention-server \
-  --namespace dev \
-  --git-branch main \
-  --git-repo https://github.com/x95castle1/multi-purpose-convention-server \
-  --label apps.tanzu.vmware.com/has-tests=true \
-  --label app.kubernetes.io/part-of=multi-purpose-convention-server \
-  --param-yaml testing_pipeline_matching_labels='{"apps.tanzu.vmware.com/pipeline":"golang-pipeline"}' \
-  --type web \
-  --yes
-```
+Add info about how to package up
