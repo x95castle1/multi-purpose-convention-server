@@ -304,6 +304,13 @@ export DOCKER_ORG=registry.harbor.learn.tapsme.org/convention-service
 
 ### make install
 
+To install the conventions server without packaging you can use `make install`. This will deploy `install-server/server-it.yaml` onto the current cluster. This is useful for quick local testing.
+
+```shell
+make install
+```
+
+This will create a new namespace `multi-purpose-convention` and configure cartographer conventions to use this convention provider.
 ### make uninstall
 
 ### make restart
@@ -319,16 +326,6 @@ export DOCKER_ORG=registry.harbor.learn.tapsme.org/convention-service
 ### make package
 
 ### make release
-
-### Installation
-
-To install the conventions server onto the Cluster use: 
-
-```shell
-make install
-```
-
-This will create a new namespace `multi-purpose-convention` and configure cartographer conventions to use this convention provider.
 
 ## Packaging
 
