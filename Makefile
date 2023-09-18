@@ -130,7 +130,7 @@ updateGoDeps:
 .PHONY: commitGoDeps
 commitGoDeps:
 	git add .
-	git commit -m "bump go deps: $(NEXT_TAG)"
+	git commit -m "bump go deps: $(NEXT_TAG)" || true
 	git push
 
 
