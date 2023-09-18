@@ -53,8 +53,6 @@ github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcU
 github.com/terminalstatic/go-xsd-validate v0.1.5 h1:RqpJnf6HGE2CB/lZB1A8BYguk8uRtcvYAPLCF15qguo=
 github.com/vmware-tanzu/cartographer-conventions/webhook v0.5.1 h1:IVKDpUrY3NZGlNDsrEEoHmqKYax9cDdTTBOBgcvsWSY=
 github.com/vmware-tanzu/cartographer-conventions/webhook v0.5.1/go.mod h1:4BRPDSErIS77QT+iqIofwq+Rfk3hsMX9v+JvT/IHtrI=
-github.com/x95castle1/convention-server-framework v0.0.0-20230918185216-57a645e0eb21 h1:XF43C2DWs9EIdZbvFRP9BLG9xXOrVapxmvQemuFDzNQ=
-github.com/x95castle1/convention-server-framework v0.0.0-20230918185216-57a645e0eb21/go.mod h1:203KcYDQjc5TLP1auURx7UA4SJ/j3NqUP6G5hWCafCI=
 github.com/x95castle1/convention-server-framework v0.1.0 h1:TZrIpeGP7picnCpY8H2ruUvNbokoNBAvkKlZmU8GvM4=
 github.com/x95castle1/convention-server-framework v0.1.0/go.mod h1:203KcYDQjc5TLP1auURx7UA4SJ/j3NqUP6G5hWCafCI=
 github.com/x95castle1/probes-convention-service v0.0.0-20230913175140-1cc310849237 h1:cNguOL0K++I8q3ZknIxUNThQwiMOx+rpldRSeJig2Bk=
