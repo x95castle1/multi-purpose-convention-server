@@ -44,7 +44,7 @@ func main() {
 	logger := l.Sugar().With(logComponentKey, logComponentName)
 	ctx = logr.NewContext(ctx, zapr.NewLogger(l))
 
-	logger.Info("Convention server starting on port: %s using prefix: %s", port, annotationPrefix)
+	logger.Info("Convention server starting", "port", port, "prefix", annotationPrefix)
 
 	// Setting an Anonymous Function to call the handler.AddConventions
 	c := func(template *corev1.PodTemplateSpec, images []webhook.ImageConfig) ([]string, error) {
