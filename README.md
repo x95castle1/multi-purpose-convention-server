@@ -403,4 +403,39 @@ make release
 
 ## Carvel Packaging
 
-If you want to reuse the carvel packaging 
+The multo purpose convention server has been packaged using Carvel for easy installation. There are 2 main components that make up the packaging that can be used by the `kctrl` cli: The package and the packagerepository. 
+
+More info can be found on the [Authoring packages with kctrl](https://carvel.dev/kapp-controller/docs/v0.47.x/kctrl-package-authoring/)
+
+### Creating the Package
+
+The first step is to create the package for the Convention Server.
+
+#### carvel/config folder
+
+This folder contains the actual kubernetes manifests that will be packaged and installed on the cluster via the Carvel pacakge. The `data-values-schema.yaml` contains values that can be provided to the packaging installation to change behavior. For example, the namespace property allows you to change what namespace the resources are installed.
+
+#### carvel/package-build.yml 
+
+This file controls how the package is built. The ```includePaths:``` property tells `kctrl` where to pull the manifests to be bundled. For example: ```config``` will pull the manifests from the local config folder.
+
+#### carvel/package-resources.yml
+
+This file sets the metadata about the package along with the packageinstall. This contains the naming of the package and the description.
+
+#### kctrl package release
+
+After the files and folders have been setup properly you can use the `kctrl package release` command to generate the imgpkg bundle.
+
+```shell
+kctrl package release --chdir ./carvel -v $(LATEST_TAG) --tag $(LATEST_TAG) --repo-output ./packagerepository -y
+```
+
+Two files are created when a PackageRepository is released successfully.
+
+`pkgrepo-build.yml` stores some metadata generated using the user inputs during the first release. This can be comitted to a git repository, if users want to do releases in their CI pipelines.
+
+`package-repository.yml` has a PackageRepository resource that can be applied to the cluster directly
+
+### Creating the Package Repository
+
