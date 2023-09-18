@@ -111,7 +111,7 @@ stash:
 
 .PHONY: stashPop
 stashPop:
-	git stash pop
+	git stash pop || true 
 
 .PHONY: updateTemplateImage
 updateTemplateImage:
