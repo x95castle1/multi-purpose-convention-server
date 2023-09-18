@@ -300,33 +300,107 @@ export DOCKER_ORG=registry.harbor.learn.tapsme.org/convention-service
 
 ### make build 
 
+Builds and tests the source code. Testing includes running fmt and and vet commands.
+
+```shell
+make build
+```
+
 ### make image
+
+Uses `pack cli` to build image and publish to the `DOCKER_ORG` location. 
+
+```shell
+export DOCKER_ORG=registry.harbor.learn.tapsme.org/convention-service
+
+make image
+```
 
 ### make install
 
-To install the conventions server without packaging you can use `make install`. This will deploy `install-server/server-it.yaml` onto the current cluster. This is useful for quick local testing.
+This will deploy `install-server/server-it.yaml` onto the current cluster. This is useful for quick testing. This will create a new namespace `multi-purpose-convention` and configure cartographer conventions to use this convention provider along with self signed certs.
 
 ```shell
 make install
 ```
 
-This will create a new namespace `multi-purpose-convention` and configure cartographer conventions to use this convention provider.
 ### make uninstall
+
+This will uninstall `install-server/server-it.yaml` from the current cluster. This is use for tearing down the installation installed for quick testing.
+
+```shell
+make uninstall
+```
 
 ### make restart
 
+This will delete the convention server pod. This is useful during testing if making changes and are using the latest tag on your images to allow the pod to pull in the latest version. 
+
+```shell
+make restart
+```
+
 ### make applyw
+
+This will apply all the workloads in the `examples/workload` to the cluster. Useful to testing conventions.
+
+```shell
+make applyw
+```
 
 ### make unapplyw
 
+This will delete all the workloads in the `examples/workload` to the cluster. Useful to testing conventions.
+
+```shell
+make applyw
+```
+
 ### make applyp
 
-### make applyw
+This will add the package repository and package for multi-purpose-convention-server. This is useful when needing to install convention server via a package. 
+
+```shell
+make applyp
+```
+
+### make unapplyp
+
+This will delete the package repository and package for multi-purpose-convention-server. This is useful when tear down the convention server installed via a package. 
+
+```shell
+make unapplyp
+```
 
 ### make package
 
+This runs the `kctrl package` commands to create a package and repo to release the convention server and push the bundle to repo. Useful when you want to package the convention server into a carvel package.
+
+```shell
+make package
+```
+
 ### make release
 
-## Packaging
+Only run this command when you are ready to package and release a version of the convention server. This command will do the following:
 
-Add info about how to package up
+* stash - Git Stash any non-commited changes.
+* updateGoDeps - Updates to the latest git dependencies. 
+* commitGoDeps - Commits any changes from the dependencies.
+* build - Builds source code
+* tag - Creates a tag in the git repo that is incremented off the last version.
+* updateLatestTagVariable - Updates any variables with the latest tag in the Makefile
+* image - Build the image via BuildPack and pushes the image to a repo.
+* updateTemplateImage - Updates the image in the carvel and examples folder to use the new sha.
+* package - Creates a package and package repo bundle.
+* commitReleasedFiles - Commits the new package files to git.
+* promote - Performs an `imgpkg copy` on the package bundle to a production repository to make it available
+* stashPop - Returns any previously stashed git changes.
+
+```shell
+make release
+```
+
+## Carvel Packaging
+
+If you want to reuse the carvel packaging 
