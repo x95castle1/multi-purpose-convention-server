@@ -157,6 +157,72 @@ func Test_addConventions(t *testing.T) {
 			validateTemplate:   true,
 			wantedTemplateFile: "storage.json",
 		},
+		{
+			name: "tolerations",
+			args: args{
+				logger:   l,
+				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/tolerations", Prefix), "[{\"key\":\"rabeyta\",\"operator\":\"Exists\",\"effect\":\"NoSchedule\"}]"),
+				images: []webhook.ImageConfig{
+					{
+						Image: imageDefault,
+						BOMs: []webhookv1alpha1.BOM{
+							{
+								Name: "cnb-app:dependencies",
+								Raw:  getFileBytes(testdataPath + "/boms/bom.cdx.not_springboot.json"),
+							},
+						},
+					},
+				},
+			},
+			want:               []string{fmt.Sprintf("%s-tolerations", Prefix)},
+			wantErr:            false,
+			validateTemplate:   true,
+			wantedTemplateFile: "tolerations.json",
+		},
+		{
+			name: "nodeSelector",
+			args: args{
+				logger:   l,
+				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/nodeSelector", Prefix), "{\"beta.kubernetes.io/os\": \"linux\"}"),
+				images: []webhook.ImageConfig{
+					{
+						Image: imageDefault,
+						BOMs: []webhookv1alpha1.BOM{
+							{
+								Name: "cnb-app:dependencies",
+								Raw:  getFileBytes(testdataPath + "/boms/bom.cdx.not_springboot.json"),
+							},
+						},
+					},
+				},
+			},
+			want:               []string{fmt.Sprintf("%s-nodeSelector", Prefix)},
+			wantErr:            false,
+			validateTemplate:   true,
+			wantedTemplateFile: "nodeSelector.json",
+		},
+		{
+			name: "affinity",
+			args: args{
+				logger:   l,
+				template: getMockTemplateWithImageAndAnnotation("", fmt.Sprintf("%s/affinity", Prefix), "{\"nodeAffinity\":{\"requiredDuringSchedulingIgnoredDuringExecution\":{\"nodeSelectorTerms\":[{\"matchExpressions\":[{\"key\":\"topology.kubernetes.io/zone\",\"operator\":\"In\",\"values\":[\"antarctica-east1\",\"antarctica-west1\"]}]}]},\"preferredDuringSchedulingIgnoredDuringExecution\":[{\"weight\":1,\"preference\":{\"matchExpressions\":[{\"key\":\"another-node-label-key\",\"operator\":\"In\",\"values\":[\"another-node-label-value\"]}]}}]}}"),
+				images: []webhook.ImageConfig{
+					{
+						Image: imageDefault,
+						BOMs: []webhookv1alpha1.BOM{
+							{
+								Name: "cnb-app:dependencies",
+								Raw:  getFileBytes(testdataPath + "/boms/bom.cdx.not_springboot.json"),
+							},
+						},
+					},
+				},
+			},
+			want:               []string{fmt.Sprintf("%s-affinity", Prefix)},
+			wantErr:            false,
+			validateTemplate:   true,
+			wantedTemplateFile: "affinity.json",
+		},
 	}
 
 	for _, tt := range tests {

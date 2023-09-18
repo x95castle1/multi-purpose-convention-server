@@ -12,7 +12,7 @@ spec:
   - name: annotations
     value:
       autoscaling.knative.dev/minScale: "1"
-      x95castle1.org/tolerations: '[{"key":"rabeyta","operator":"Exists","effect":"NoSchedule"}]'
+      x95castle1.org/nodeSelector: '{"beta.kubernetes.io/os": "linux"}'
   source:
     git:
       ref:

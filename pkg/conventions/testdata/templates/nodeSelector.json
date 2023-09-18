@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "creationTimestamp": null,
+    "annotations": {
+      "x95castle1.org/nodeSelector": "{\"beta.kubernetes.io/os\": \"linux\"}"
+    }
+  },
+  "spec": {
+    "containers": [
+      {
+        "name": "workload",
+        "image": "sample-accelerators/tanzu-java-web-app",
+        "resources": {},
+        "ports" : []
+      }
+    ],
+    "nodeSelector": {"beta.kubernetes.io/os": "linux"}
+  }
+}
