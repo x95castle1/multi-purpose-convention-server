@@ -56,15 +56,15 @@ restart: ## Kill the convention pods and allow them to be restarted
 	kubectl get pods -n $(INSTALL_NAMESPACE) | grep webhook | awk '{print $$1}' | xargs kubectl delete pods -n $(INSTALL_NAMESPACE)
 
 .PHONY: applyw
-applyw:
+applyw: ## apply example workloads
 	kubectl apply -f ./examples/workload/.
 
 .PHONY: unapplyw
-unapplyw:
+unapplyw: ## delete example workloads
 	kubectl delete -f ./examples/workload/.
 
 .PHONY: applyp
-applyp:
+applyp: ## apply package repository and then install the package
 	tanzu package repository add multi-purpose-conventions-repository \
 	--url projects.registry.vmware.com/tanzu_practice/conventions/multi-purpose-convention-server-bundle-repo:$(LATEST_TAG) \
 	--namespace tap-install \
@@ -77,7 +77,7 @@ applyp:
 		--yes
 
 .PHONY: unapplyp
-unapplyp:
+unapplyp: ## delete package and package repository
 	tanzu package installed delete multi-purpose-convention-server -n tap-install --yes
 	tanzu package repository delete multi-purpose-conventions-repository -n tap-install --yes
 
@@ -136,7 +136,7 @@ commitGoDeps:
 
 # future, clone main and perform release on that vs stash/unstash
 .PHONY: release
-release: stash updateGoDeps commitGoDeps build tag updateLatestTagVariable image updateTemplateImage package commitReleasedFiles promote stashPop
+release: stash updateGoDeps commitGoDeps build tag updateLatestTagVariable image updateTemplateImage package commitReleasedFiles promote stashPop ## perform a release
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target
