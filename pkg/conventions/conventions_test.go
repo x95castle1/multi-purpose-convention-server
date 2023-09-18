@@ -22,6 +22,7 @@ func Test_addConventions(t *testing.T) {
 	testdataPath := "testdata"
 	var emptyAppliedConventions []string
 	l := zap.NewNop().Sugar()
+
 	type args struct {
 		logger   *zap.SugaredLogger
 		template *corev1.PodTemplateSpec
