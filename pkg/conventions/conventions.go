@@ -29,11 +29,6 @@ var NodeSelectorAnnotation = Prefix + "/nodeSelector"
 var AffinityId = Prefix + "-affinity"
 var AffinityAnnotation = Prefix + "/affinity"
 
-//Example of how you can add environment variable
-//var WorkloadNameId = Prefix + "-carto-run-workload-name"
-//var WorkloadNameLabel = "carto.run/workload-name"
-//var WorkloadNameEnvVariable = "CARTO_RUN_WORKLOAD_NAME"
-
 var Conventions = []convention.Convention{
 	&convention.BasicConvention{
 		Id: ReadinessId,
@@ -106,27 +101,6 @@ var Conventions = []convention.Convention{
 			return nil
 		},
 	},
-
-	// Commented out: Example of how you can add something as an environment variable
-	// &convention.BasicConvention{
-	// 	Id: WorkloadNameId,
-	// 	Applicable: func(ctx context.Context, target *corev1.PodTemplateSpec, metadata convention.ImageMetadata) bool {
-	// 		return getLabel(target, WorkloadNameLabel) != ""
-	// 	},
-	// 	Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
-	// 		value := getLabel(target, WorkloadNameLabel)
-
-	// 		for i := range target.Spec.Containers {
-	// 			c := &target.Spec.Containers[i]
-	// 			addEnvVar(c, corev1.EnvVar{
-	// 				Name:  WorkloadNameEnvVariable,
-	// 				Value: value,
-	// 			})
-	// 		}
-
-	// 		return nil
-	// 	},
-	// },
 
 	&convention.BasicConvention{
 		Id: ArgsId,
@@ -266,27 +240,10 @@ func getAnnotation(pts *corev1.PodTemplateSpec, key string) string {
 }
 
 // getLabel gets the label on PodTemplateSpec
-func getLabel(pts *corev1.PodTemplateSpec, key string) string {
-	if pts.Labels == nil || len(pts.Labels[key]) == 0 {
-		return ""
-	}
-	return pts.Labels[key]
-}
-
 func getProbe(config string) (*corev1.Probe, error) {
 	probe := corev1.Probe{}
 	err := json.Unmarshal([]byte(config), &probe)
 	return &probe, err
-}
-
-func addEnvVar(container *corev1.Container, envvar corev1.EnvVar) bool {
-	for _, e := range container.Env {
-		if e.Name == envvar.Name {
-			return false
-		}
-	}
-	container.Env = append(container.Env, envvar)
-	return true
 }
 
 func getTolerations(config string) ([]corev1.Toleration, error) {
