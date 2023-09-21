@@ -41,11 +41,17 @@ pack config default-builder paketobuildpacks/builder-jammy-tiny
 * [Tanzu CLI](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/install-tanzu-cli.html)
 
 * [Kctrl CLI](https://github.com/carvel-dev/carvel) - Needed for bundling and releasing as a Carvel Package
-
+```shell
+brew install vmware-tanzu/carvel
+```
 * [jq](https://jqlang.github.io/jq/)
-
+```shell
+brew install jq
+```
 * [gsed](https://formulae.brew.sh/formula/gnu-sed)
-
+```shell
+brew install gsed
+```
 ## Available Options
 
 | Annotation | Description | 
