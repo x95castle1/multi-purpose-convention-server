@@ -51,11 +51,7 @@ spec:
     spec:
       containers:
       - name: webhook
-<<<<<<< Updated upstream
         image: registry.harbor.learn.tapsme.org/convention-service/multi-purpose-convention@sha256:a0a266152c1447090dd98f7b3c6c841323b57ba4d73a01b776c81490fb38a358
-=======
-        image: registry.harbor.learn.tapsme.org/convention-service/multi-purpose-convention@sha256:a0a266152c1447090dd98f7b3c6c841323b57ba4d73a01b776c81490fb38a358
->>>>>>> Stashed changes
         imagePullPolicy: Always
         env:
         - name: PORT
