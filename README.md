@@ -284,7 +284,7 @@ tanzu package install multi-purpose-convention-server  \
 
 ## Setup Development Environment
 
-This project has `Makefile` to `make` life easier for you. 
+This project has a `Makefile` to `make` life easier for you. 
 
 ### Variables
 
