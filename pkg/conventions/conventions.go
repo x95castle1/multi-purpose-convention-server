@@ -37,18 +37,15 @@ var Conventions = []convention.Convention{
 		},
 		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
 			readinessProbe := getAnnotation(target, ReadinessAnnotation)
+			c := &target.Spec.Containers[containerIdx]
 
-			for i := range target.Spec.Containers {
-				c := &target.Spec.Containers[i]
-
-				if c.ReadinessProbe == nil {
-					p, err := getProbe(readinessProbe)
-					if err != nil {
-						return err
-					}
-					log.Printf("Adding ReadinessProbe %+v", p)
-					c.ReadinessProbe = p
+			if c.ReadinessProbe == nil {
+				p, err := getProbe(readinessProbe)
+				if err != nil {
+					return err
 				}
+				log.Printf("Adding ReadinessProbe %+v", p)
+				c.ReadinessProbe = p
 			}
 			return nil
 		},
@@ -61,18 +58,15 @@ var Conventions = []convention.Convention{
 		},
 		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
 			livenessProbe := getAnnotation(target, LivenessAnnotation)
+			c := &target.Spec.Containers[containerIdx]
 
-			for i := range target.Spec.Containers {
-				c := &target.Spec.Containers[i]
-
-				if c.LivenessProbe == nil {
-					p, err := getProbe(livenessProbe)
-					if err != nil {
-						return err
-					}
-					log.Printf("Adding LivenessProbe %+v", p)
-					c.LivenessProbe = p
+			if c.LivenessProbe == nil {
+				p, err := getProbe(livenessProbe)
+				if err != nil {
+					return err
 				}
+				log.Printf("Adding LivenessProbe %+v", p)
+				c.LivenessProbe = p
 			}
 			return nil
 		},
@@ -85,18 +79,14 @@ var Conventions = []convention.Convention{
 		},
 		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
 			startupProbe := getAnnotation(target, StartUpAnnotation)
-
-			for i := range target.Spec.Containers {
-				c := &target.Spec.Containers[i]
-
-				if c.StartupProbe == nil {
-					p, err := getProbe(startupProbe)
-					if err != nil {
-						return err
-					}
-					log.Printf("Adding StartupProbe %+v", p)
-					c.StartupProbe = p
+			c := &target.Spec.Containers[containerIdx]
+			if c.StartupProbe == nil {
+				p, err := getProbe(startupProbe)
+				if err != nil {
+					return err
 				}
+				log.Printf("Adding StartupProbe %+v", p)
+				c.StartupProbe = p
 			}
 			return nil
 		},
@@ -109,18 +99,15 @@ var Conventions = []convention.Convention{
 		},
 		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
 			arguments := getAnnotation(target, ArgsAnnotation)
+			c := &target.Spec.Containers[containerIdx]
 
-			for i := range target.Spec.Containers {
-				c := &target.Spec.Containers[i]
-
-				a, err := getArguments(arguments)
-				if err != nil {
-					return err
-				}
-
-				log.Printf("Adding Args %+v", a)
-				c.Args = append(c.Args, a...)
+			a, err := getArguments(arguments)
+			if err != nil {
+				return err
 			}
+
+			log.Printf("Adding Args %+v", a)
+			c.Args = append(c.Args, a...)
 			return nil
 		},
 	},
@@ -132,20 +119,17 @@ var Conventions = []convention.Convention{
 		},
 		Apply: func(ctx context.Context, target *corev1.PodTemplateSpec, containerIdx int, metadata convention.ImageMetadata, imageName string) error {
 			storage := getAnnotation(target, StorageAnnotation)
+			c := &target.Spec.Containers[containerIdx]
 
-			for i := range target.Spec.Containers {
-				c := &target.Spec.Containers[i]
-
-				s, err := getStorage(storage)
-				if err != nil {
-					return err
-				}
-
-				log.Printf("Adding Volumes %+v", s.Volumes)
-				target.Spec.Volumes = append(target.Spec.Volumes, s.Volumes...)
-				log.Printf("Adding VolumeMounts %+v", s.VolumeMounts)
-				c.VolumeMounts = append(c.VolumeMounts, s.VolumeMounts...)
+			s, err := getStorage(storage)
+			if err != nil {
+				return err
 			}
+
+			log.Printf("Adding Volumes %+v", s.Volumes)
+			target.Spec.Volumes = append(target.Spec.Volumes, s.Volumes...)
+			log.Printf("Adding VolumeMounts %+v", s.VolumeMounts)
+			c.VolumeMounts = append(c.VolumeMounts, s.VolumeMounts...)
 			return nil
 		},
 	},
