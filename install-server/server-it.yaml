@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
       - name: webhook
-        image: registry.harbor.learn.tapsme.org/convention-service/multi-purpose-convention@sha256:e9e14f32e4602123101ecfec15e7a050d7bef2ba789a73f32f48b274f00b1461
+        image: registry.harbor.learn.tapsme.org/convention-service/multi-purpose-convention@sha256:e31b9aa2a3e56304264a0ab4a6ebf8439c54e610b5d15abf5e5bbaf5a0ed42aa
         imagePullPolicy: Always
         env:
         - name: PORT
