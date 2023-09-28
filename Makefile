@@ -145,13 +145,15 @@ verifyDockerIsRunning:
 .PHONY: release
 release: verifyDockerIsRunning stash updateGoDeps commitGoDeps build tag updateLatestTagVariable image updateTemplateImage pruneYourPackages package commitReleasedFiles promote stashPop ## perform a release
 
-# this prunes the old packages from your Package repository. Keeps the last 5. 
+# this prunes the old packages from your Package repository. Keeps the last 5.
 .PHONY: pruneYourPackages
-pruneYourPackages: 
+pruneYourPackages: ## prune package repository
 	./scripts/pruneYourPackages.sh
-	
+
+.PHONY: setupDevEnv
+setupDevEnv: ## install required tools for dev
+	./scripts/local-dev-setup.sh
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
-
