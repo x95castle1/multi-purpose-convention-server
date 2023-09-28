@@ -134,10 +134,16 @@ commitGoDeps:
 	git commit -m "bump go deps: $(NEXT_TAG)" || true
 	git push
 
+.PHONY: verifyDockerIsRunning
+verifyDockerIsRunning:
+	@if ! docker stats --no-stream &> /dev/null; then \
+		echo "Docker is not running. Please start docker before releasing."; \
+        exit 1; \
+    fi
 
 # future, clone main and perform release on that vs stash/unstash
 .PHONY: release
-release: stash updateGoDeps commitGoDeps build tag updateLatestTagVariable image updateTemplateImage pruneYourPackages package commitReleasedFiles promote stashPop ## perform a release
+release: verifyDockerIsRunning stash updateGoDeps commitGoDeps build tag updateLatestTagVariable image updateTemplateImage pruneYourPackages package commitReleasedFiles promote stashPop ## perform a release
 
 # this prunes the old packages from your Package repository. Keeps the last 5. 
 .PHONY: pruneYourPackages
