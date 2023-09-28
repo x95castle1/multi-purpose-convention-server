@@ -137,7 +137,13 @@ commitGoDeps:
 
 # future, clone main and perform release on that vs stash/unstash
 .PHONY: release
-release: stash updateGoDeps commitGoDeps build tag updateLatestTagVariable image updateTemplateImage package commitReleasedFiles promote stashPop ## perform a release
+release: stash updateGoDeps commitGoDeps build tag updateLatestTagVariable image updateTemplateImage pruneYourPackages package commitReleasedFiles promote stashPop ## perform a release
+
+# this prunes the old packages from your Package repository. Keeps the last 5. 
+.PHONY: pruneYourPackages
+pruneYourPackages: 
+	./scripts/pruneYourPackages.sh
+	
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Print help for each make target

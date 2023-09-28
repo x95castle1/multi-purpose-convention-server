@@ -1,4 +1,4 @@
-apiVersion: data.packaging.carvel.dev/v1alpha1
+carvel/packagerepository/packages/multi-purpose-convention-server.conventions.tanzu.vmware.com/0.24.0.ymlcarvel/packagerepository/packages/multi-purpose-convention-server.conventions.tanzu.vmware.com/0.24.0.ymlapiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
   creationTimestamp: null
